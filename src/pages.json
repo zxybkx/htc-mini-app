@@ -1,59 +1,102 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页,
+	"pages": [
 		{
-			"path": "pages/main/main",
+			"path": "pages/excessive/index",
 			"style": {
-				"navigationBarTitleText": "登录模板"
+				"navigationBarTitleText": "登录"
 			}
-		}, {
-			"path": "pages/login/login",
+		},
+		{
+			"path": "pages/login/index",
 			"style": {
 				"navigationBarTitleText": "登录"
 			}
 		}, {
-			"path": "pages/reg/reg",
+			"path": "pages/select-company/index",
 			"style": {
-				"navigationBarTitleText": "注册"
+				"navigationBarTitleText": "选择公司"
 			}
 		}, {
-			"path": "pages/pwd/pwd",
+			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "找回密码"
+				"navigationBarTitleText": "发票"
 			}
 		}, {
-			"path": "pages/pwd/update-password",
+			"path": "pages/scan-invoice/index",
 			"style": {
-				"navigationBarTitleText": "修改密码"
+				"navigationBarTitleText": "扫发票"
 			}
 		}, {
-			"path": "pages/user/user",
+			"path": "pages/photo-invoice/index",
 			"style": {
-				"navigationBarTitleText": "我的"
+				"navigationBarTitleText": "拍发票"
+			}
+		}, {
+			"path": "pages/my-invoice-list/index",
+			"style": {
+				"navigationBarTitleText": "我的发票"
+			}
+		}, {
+			"path": "pages/import-ofd/index",
+			"style": {
+				"navigationBarTitleText": "OFD文件"
+			}
+		}, {
+			"path": "pages/import-invoice/index",
+			"style": {
+				"navigationBarTitleText": "导入电子票"
+			}
+		}, {
+			"path": "pages/import-invoice-list/index",
+			"style": {
+				"navigationBarTitleText": "导入电子票结果"
+			}
+		}, {
+			"path": "pages/scan-invoice-detail/index",
+			"style": {
+				"navigationBarTitleText": "扫发票详情"
+			}
+		}, {
+			"path": "pages/invoice-collect-result/index",
+			"style": {
+				"navigationBarTitleText": "本次发票采集汇总"
+			}
+		},{
+			"path": "pages/view-record/index",
+			"style": {
+				"navigationBarTitleText": "发票详情"
+			}
+		},{
+			"path": "pages/photo-invoice-list/index",
+			"style": {
+				"navigationBarTitleText": "拍发票识别列表"
+			}
+		},{
+			"path": "pages/photo-invoice-detail/index",
+			"style": {
+				"navigationBarTitleText": "拍发票详情"
+			}
+		},{
+			"path": "pages/edit-photo-detail/index",
+			"style": {
+				"navigationBarTitleText": "编辑发票"
+			}
+		},{
+			"path": "pages/other-photo-invoice-detail/index",
+			"style": {
+				"navigationBarTitleText": "拍发票详情"
+			}
+		},{
+			"path": "pages/other-photo-invoice-detail-edit/index",
+			"style": {
+				"navigationBarTitleText": "拍发票详情"
+			}
+		},{
+			"path": "pages/photo-invoice-result/index",
+			"style": {
+				"navigationBarTitleText": "拍发票详情"
 			}
 		}
-		// #ifdef APP-PLUS
-		, {
-			"path": "pages/invite/invite",
-			"style": {
-				"navigationBarTitleText": "邀请好友"
-			}
-		}
-		// #endif
-		, {
-			"path": "pages/invited-user/invited-user",
-			"style": {
-				"navigationBarTitleText": "受邀用户"
-			}
-		}
-		// #ifdef H5
-		, {
-			"path": "pages/invite-reg/invite-reg",
-			"style": {
-				"navigationBarTitleText": "邀请注册页面",
-				"navigationStyle": "custom"
-			}
-		}
-		// #endif
 	],
 	"tabBar": {
 		"color": "#7a7e83",

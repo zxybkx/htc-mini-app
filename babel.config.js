@@ -36,7 +36,6 @@ if (
     ])
   } catch (e) {}
 }
-
 process.UNI_LIBRARIES = process.UNI_LIBRARIES || ['@dcloudio/uni-ui']
 process.UNI_LIBRARIES.forEach(libraryName => {
   plugins.push([
@@ -49,6 +48,14 @@ process.UNI_LIBRARIES.forEach(libraryName => {
     }
   ])
 })
+// plugins.push(
+//   ['import', {
+//     libraryName: 'vant',
+//     libraryDirectory: 'es',
+//     style: true
+//   }, 'vant']
+// )
+
 module.exports = {
   presets: [
     [

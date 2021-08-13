@@ -3,41 +3,74 @@
 		mapState,
 		mapMutations
 	} from 'vuex'
+	// import { ApiGetAlipayInvoicePackage } from '@/api'
+	import { post } from './api/url';
+	const ApiGetAlipayInvoicePackage= data =>post(`/hcan/v1/0/alipay/query_invoice_package?encryptedUid=${encodeURIComponent(data.encryptedUid)}&packageId=${data.packageId}`)
+	const INVOICEKIND={
+		PLAIN:'增值税电子普通发票',
+		SPECIAL:'增值税专用发票',
+		PLAIN_INVOICE:'增值税普通发票',
+		SALSE_INVOICE:'机动车销售统一发票',
+		PAPER_INVOICE:'增值税普通发票(卷式)'
+	}
 
-	export default {
-		onLaunch: function() {
-			console.log('App Launch');
-			let uniIdToken = uni.getStorageSync('uni_id_token')
-			if (uniIdToken) {
-				this.login(uni.getStorageSync('username'))
+	const forMatting=invoiceInfo=>{
+		let tempArr=invoiceInfo.alipay_ebpp_invoice_einvpackage_query_response.package_item_info_list;
+
+		return tempArr.map(obj => {
+			return {
+				invoiceDate: obj.invoice_output_info.invoice_date,
+				invoiceTypeMeaning: INVOICEKIND[obj.invoice_output_info.invoice_kind],
+				buyerName: obj.invoice_output_info.invoice_title.title_name,
+				salerName: obj.invoice_output_info.payee,
+				invoiceCode: obj.invoice_output_info.invoice_code,
+				invoiceNumber: obj.invoice_output_info.invoice_no,
+				invoiceNo: obj.invoice_output_info.invoice_no,
+				checkCode: obj.invoice_output_info.check_code,
+				invoiceAmount: obj.invoice_output_info.ex_tax_amount,
+				totalAmount: obj.invoice_output_info.sum_amount,
+				imageUrl: obj.invoice_output_info.invoice_img_url,
+				fileUrl:obj.invoice_output_info.invoice_img_url,
+				currency:'CNY',
+				buyerTaxNo:obj.invoice_output_info.payee_register_no,
+				salerAddressPhone: obj.invoice_output_info.payee_address_tel,
+				salerAccount: obj.invoice_output_info.payee_bank_name_account,
 			}
-
-			// #ifdef APP-PLUS
-			// 一键登录预登陆，可以显著提高登录速度
-			uni.preLogin({
-				provider: 'univerify',
-				success: (res) => {
-					this.setUniverifyErrorMsg()
-					this.setHideUniverify(false);
-					console.log("preLogin success: ", res);
-				},
-				fail: (err) => {
-					this.setUniverifyErrorMsg(err.errMsg)
-					// 没有开通一键登录
-					this.setHideUniverify(true);
-					console.log("preLogin fail: ", err);
-				}
-			})
-			// #endif
+		});
+	}
+	export default {
+		globalData: {
+			currentCompanyInfo: {},//当前登录用户所在企业下的详细信息
+			currentInvoiceInfo:{},//页面跳转时UI展示经过格式化后的信息 ===>格式方法在/utils/formatInvObj.js文件中
+			currentInvoiceAllInfo:{},//页面逻辑跳转时发票的所有信息
+			uploadRecord:'',//是否强制上传档案
+			tipInvoiceUser:'', //是否提示发票持有人信息,
+			loginInfo:{},//登录成功返回的信息
 		},
-		onShow: function() {
-			console.log('App Show');
+		onLaunch(options) {
+			console.log('App Launch',options);
+			
+		},
+		async onShow(options) {
+			console.log('App Show',options);
+			if(options.path&&options.path==='pages/import-invoice/index'){
+
+				uni.showLoading();
+				const getInfores=await ApiGetAlipayInvoicePackage(options.query);
+				const tempRes=JSON.parse(getInfores.body);
+				console.log('////',tempRes);
+				const backRes = forMatting(tempRes);
+				
+                getApp().globalData.currentInvoiceAllInfo=backRes;
+				uni.hideLoading();
+
+				uni.navigateTo({
+					url: '/pages/import-invoice-list/index',
+				});
+			}
 		},
 		onHide: function() {
 			console.log('App Hide');
-		},
-		methods: {
-			...mapMutations(['login', 'setUniverifyErrorMsg', 'setHideUniverify']),
 		}
 	}
 </script>
@@ -47,125 +80,17 @@
 	@import "components/m-icon/m-icon.css";
 
 	/*每个页面公共css */
-	page {
-		min-height: 100%;
-		display: flex;
-		font-size: 14px;
-	}
-
-	input,
-	textarea,
-	button {
-		font-size: 14px;
-	}
-
-	/* #ifdef MP-BAIDU */
-	page {
-		width: 100%;
+	.container {
 		height: 100%;
-		display: block;
-	}
-
-	swan-template {
-		width: 100%;
-		min-height: 100%;
 		display: flex;
-	}
-
-	/* 原生组件模式下需要注意组件外部样式 */
-	custom-component {
-		width: 100%;
-		min-height: 100%;
-		display: flex;
-	}
-
-	/* #endif */
-
-	/* #ifdef MP-ALIPAY */
-	page {
-		min-height: 100vh;
-	}
-
-	/* #endif */
-
-	/* 原生组件模式下需要注意组件外部样式 */
-	m-input {
-		width: 100%;
-		/* min-height: 100%; */
-		display: flex;
-		flex: 1;
-	}
-
-	.content {
-		display: flex;
-		flex: 1;
 		flex-direction: column;
-		background-color: #efeff4;
-		padding: 10px;
+		align-items: center;
+		justify-content: space-between;
+		box-sizing: border-box;
 	}
-
-	.input-group {
-		background-color: #ffffff;
-		margin-top: 20px;
-		position: relative;
-	}
-
-	.input-group::before {
-		position: absolute;
-		right: 0;
-		top: 0;
-		left: 0;
-		height: 1px;
-		content: '';
-		-webkit-transform: scaleY(.5);
-		transform: scaleY(.5);
-		background-color: #c8c7cc;
-	}
-
-	.input-group::after {
-		position: absolute;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		height: 1px;
-		content: '';
-		-webkit-transform: scaleY(.5);
-		transform: scaleY(.5);
-		background-color: #c8c7cc;
-	}
-
-	.input-row {
+	.C-flex{
 		display: flex;
-		flex-direction: row;
-		position: relative;
-		/* font-size: 18px; */
-		height: 40px;
-		line-height: 40px;
-	}
-
-	.input-row .title {
-		width: 70px;
-		padding-left: 15px;
-	}
-
-	.input-row.border::after {
-		position: absolute;
-		right: 0;
-		bottom: 0;
-		left: 8px;
-		height: 1px;
-		content: '';
-		-webkit-transform: scaleY(.5);
-		transform: scaleY(.5);
-		background-color: #c8c7cc;
-	}
-
-	.btn-row {
-		margin-top: 25px;
-		padding: 10px;
-	}
-
-	button.primary {
-		background-color: #0faeff;
+		justify-content: center;
+		align-items: center;
 	}
 </style>
