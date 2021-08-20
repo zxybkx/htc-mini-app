@@ -189,7 +189,12 @@ export const ApiSetInvOwner = data => {
 
 /**
  * 通过 url 上传档案
+ * @sourceCode 
+ *      1: WECHAT_CARD '微信卡包' 需要下载
+ *      2：OCR_IDENTIFY 'ocr识别'
+ *      3：LOCAL_SERVICE 本地文件
  */
+
  export const ApiUploadByUrl = data => post(`/hivp/v1/${getCompanyInfo().tenantId}/invoice-pool-wechat/update-archives-by-url-weChat`,
  {
    companyId: getCompanyInfo().companyId,

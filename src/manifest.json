@@ -1,7 +1,7 @@
 {
-    "name" : "login-template",
+    "name" : "tax",
     "appid" : "",
-    "description" : "登录模板",
+    "description" : "汇税通云票",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,

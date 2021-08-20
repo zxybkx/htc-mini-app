@@ -47,8 +47,11 @@
 <template>
     <view class="inv-detail">
         <invoice-Ui :initInvoice="invoiceObj"></invoice-Ui>
-        <view class="bottom-wrapper bottom-wrapper-one">
+        <view class="bottom-wrapper bottom-wrapper-one" v-if='imgUrl'>
             <button class="button" @click="handleViewRecord">查看档案</button>
+        </view>
+        <view class="bottom-wrapper bottom-wrapper-one" v-else>
+            <button class="button" @click="handleUploadRecord">上传档案</button>
         </view>
         <div class="C-flex modal" v-if='tag' @click="handleHide">
             <div class="wrapper">
@@ -58,14 +61,15 @@
     </view>
 </template>
 <script>
-  import {ApiIsInvExist,ApigetSignedUrl,ApiOfdUrlToJpg} from '@/api/index';
+  import {ApiIsInvExist,ApigetSignedUrl,ApiOfdUrlToJpg,ApiFileUpload} from '@/api/index';
   import invoiceUi from '@/components/invoiceUi.vue'
   export default{
     data() {
         return {
             invoiceObj:{},
             imgUrl:'',
-            tag:false
+            tag:false,
+            filePath:'',//当不存在档案时 上传档案的临时路径
         }
     },
     components: {
@@ -74,6 +78,80 @@
     methods:{
       imageLoad(){
         console.log(134);
+      },
+      async handleUploadRecord(){
+        try {
+          let chooseResult={};let error={};
+          // #ifdef MP-ALIPAY
+          [error,chooseResult]=await uni.chooseImage({
+            count: 1,
+            sizeType: ['compressed'],
+          })
+          if(error) throw error;
+          this.filePath=chooseResult.tempFilePaths[0];
+          // #endif 
+          // #ifndef MP-ALIPAY
+          let [error,tag]=await uni.showModal({
+            title: '提示',
+            content: '选择上传',
+            cancelText:'其他方式',
+            confirmText:'拍照上传'
+          })
+          if(error) throw error;
+          if (tag.confirm) {
+            [error,chooseResult]=await uni.chooseImage({
+              count: 1,
+              sizeType: ['compressed'],
+            })
+            if(error) throw error;
+            this.filePath=chooseResult.tempFilePaths[0];
+          } else if (tag.cancel) {
+            [error,chooseResult]=await uni.chooseMessageFile({
+              count:1,
+              type:'file',
+              extension:['pdf']
+            })
+            if(error) throw error;
+            this.filePath=chooseResult.tempFiles[0].path;
+          }
+          // #endif
+          uni.showLoading({title: '开始上传档案'})
+          let uploadResult=await ApiFileUpload({filePath:this.filePath,invoicePoolHeaderId:this.invoiceObj.invoicePoolHeaderId,checkTag:'Y'})
+          uploadResult=JSON.parse(uploadResult);
+          // console.log('uploadResult',uploadResult);
+          const self=this;
+          if(uploadResult.status==='1001'){
+            uni.hideLoading();
+            uni.showModal({
+              title: '提示',
+              content: '发票校验失败是否强制上传',
+              success (res) {
+                if (res.confirm) {
+                  self.agaginNoCheckUpload();
+                }
+              }
+            })
+          } else if(uploadResult.status==="1000"){
+            this.imgUrl=this.filePath;
+            uni.hideLoading();
+          }else{
+            uni.hideLoading();
+            uploadResult.message&&uni.showModal({title: '错误',content: uploadResult.message,showCancel: false})
+          }
+          uni.hideLoading();
+        } catch (error) {
+          console.log('error',error);
+          uni.hideLoading();
+            // uni.showModal({title: '错误',content: '上传出错',showCancel: false})
+        }
+      },
+      async agaginNoCheckUpload(){
+        // 发票校验失败继续上传
+        uni.showLoading({title: '继续上传档案'})
+        await ApiFileUpload({filePath:this.filePath,invoicePoolHeaderId:this.invoiceObj.invoicePoolHeaderId,checkTag:'N'})
+        this.imgUrl=this.filePath;
+        uni.hideLoading();
+        // uni.redirectTo({url:'/pages/invoice-collect-result/index'});
       },
       handleViewRecord(){
         if(this.imgUrl.startsWith('data:image')){

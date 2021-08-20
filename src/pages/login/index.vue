@@ -66,22 +66,22 @@
 		},
     onLoad(options){
       const self=this;
-      // if(options.openId){
-      //   this.openId=options.openId;
-      // }else{
-      //   my.getAuthCode({scopes: 'auth_base'})
-      //   .then(res=>{
-      //       // 通过token获取相关信息
-      //       return ApiAlipayLogin(res.authCode);
-      //   })
-      //   .then(res=>{
-      //       // console.log(res);
-      //       this.openId=res.data;
-      //   })
-      //   .catch(err=>{
-      //     console.log('code获取出错',err);
-      //   })
-      // }
+      if(options.openId){
+        this.openId=options.openId;
+      }else{
+        my.getAuthCode({scopes: 'auth_base'})
+        .then(res=>{
+            // 通过token获取相关信息
+            return ApiAlipayLogin(res.authCode);
+        })
+        .then(res=>{
+            // console.log(res);
+            this.openId=res.data;
+        })
+        .catch(err=>{
+          console.log('code获取出错',err);
+        })
+      }
     }
 	}
 </script>

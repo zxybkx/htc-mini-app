@@ -38,8 +38,8 @@ export const formatExistInvObj = function (inv) {
     buyerName: inv['buyerName'],
     salerName: inv['salerName'],
     buyerTaxNo: inv['buyerTaxNo'],
-    salerAddressPhone: inv['salerAddressPhone'],
-    salerAccount: inv['salerAccount'],
+    buyerAddressPhone: inv['buyerAddressPhone'],
+    buyerAccount: inv['buyerAccount'],
   }
 }
 
@@ -55,11 +55,11 @@ export const formatOcrInv = function (inv) {
     imageUrl: inv['imageUrl'],
     totalAmount: inv['total'],
     invoiceAmount: inv['subtotalAmount'],
-    buyerName: inv['buyerName'],
     salerName: inv['sellerName'],
+    buyerName: inv['buyerName'],
     buyerTaxNo: inv['buyerId'],
-    salerAddressPhone: inv['sellerAddress'],
-    salerAccount: inv['sellerBank'],
+    buyerAddressPhone: inv['buyerAddress'],
+    buyerAccount: inv['buyerBank'],
   }
 }
 
@@ -77,8 +77,8 @@ export const formatOfdInv = (inv) => {
     salerName: inv['sellerName'],
     buyerName: inv['buyerName'],
     buyerTaxNo: inv['buyerTaxpayerIdentificationNumber'],
-    salerAddressPhone: inv['sellerAddress'],
-    salerAccount: inv['sellerBank'],
+    buyerAddressPhone: inv['buyerAddress'],
+    buyerAccount: inv['buyerBank'],
   }
 }
 

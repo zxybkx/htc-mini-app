@@ -229,8 +229,12 @@
                         // 抛错
                         return {code:0,msg:res.message}
                     }
-                    if(res.status==='H1014'&&res.data[0].message==='已认领至我的发票。'){
-                        return {code:1,msg:'成功'} 
+                    if(res.status==='H1014'){
+                        if(res.data[0].message==='已认领至我的发票。'||res.data[0].message==='已添加至我的发票。'){
+                            return {code:1,msg:'成功'} 
+                        }else{
+                            return {code:0,msg:res.data[0].message}
+                        }
                     }else{
                         if(res.failed){
                             return {code:0,msg:res.message}

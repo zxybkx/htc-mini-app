@@ -41,7 +41,7 @@ export default {
                 
                 // 获取授权authCode
                 const getIsvToken = await ApiGetIsvToken();
-                console.log('//isvToken',getIsvToken);
+                console.log('//this.currentCompany.taxpayerNumber',this.currentCompany.taxpayerNumber);
                 my.navigateToMiniProgram({
                     appId: '77700150', // 固定值，请勿修改
                     path: `pages/select-invoice-bill/index?isv_app_code=${ISV_APP_CODE}&isv_token=${getIsvToken.isvToken}&isv_serial_no=${getIsvToken.serialNo}&isv_register_no=${this.currentCompany.taxpayerNumber}&source=einvoice&channel=reim_helper`,

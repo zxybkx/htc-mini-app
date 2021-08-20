@@ -18,6 +18,7 @@
 		let tempArr=invoiceInfo.alipay_ebpp_invoice_einvpackage_query_response.package_item_info_list;
 
 		return tempArr.map(obj => {
+			console.log('////obj.file_download_url',obj.file_download_url);
 			return {
 				invoiceDate: obj.invoice_output_info.invoice_date,
 				invoiceTypeMeaning: INVOICEKIND[obj.invoice_output_info.invoice_kind],
@@ -30,7 +31,7 @@
 				invoiceAmount: obj.invoice_output_info.ex_tax_amount,
 				totalAmount: obj.invoice_output_info.sum_amount,
 				imageUrl: obj.invoice_output_info.invoice_img_url,
-				fileUrl:obj.invoice_output_info.invoice_img_url,
+				fileUrl:obj.file_download_url,
 				currency:'CNY',
 				buyerTaxNo:obj.invoice_output_info.payee_register_no,
 				salerAddressPhone: obj.invoice_output_info.payee_address_tel,
@@ -58,7 +59,7 @@
 				uni.showLoading();
 				const getInfores=await ApiGetAlipayInvoicePackage(options.query);
 				const tempRes=JSON.parse(getInfores.body);
-				console.log('////',tempRes);
+				
 				const backRes = forMatting(tempRes);
 				
                 getApp().globalData.currentInvoiceAllInfo=backRes;
