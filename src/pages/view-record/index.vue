@@ -124,7 +124,7 @@
             uni.hideLoading();
             uni.showModal({
               title: '提示',
-              content: '发票校验失败是否强制上传',
+              content: 'OCR识别信息与发票信息不一致，是否继续上传？',
               success (res) {
                 if (res.confirm) {
                   self.agaginNoCheckUpload();
@@ -171,6 +171,7 @@
             }
           })
         }else if(this.imgUrl){
+          console.log('///this.imgUrl',this.imgUrl);
           uni.previewImage({
             urls: [this.imgUrl], // 当前显示图片的http链接
           })
@@ -210,9 +211,9 @@
           // ofd转化
           const res=await ApiOfdUrlToJpg(fileUrl);
           this.imgUrl=`data:image/jpg;base64,${res.data}`;
-        }else if(fileUrl.indexOf('https://mp.weixin.qq.com/')>-1||fileUrl.indexOf('http://mdn.alipayobjects.com')>-1){
+        }else if(fileUrl.indexOf('https://mp.weixin.qq.com/')>-1||fileUrl.indexOf('https://mdn.alipayobjects.com')>-1){
           // 此时是导入电子票从微信或者支付宝获取的文件url
-          this.imgUrl=fileUrl;
+          this.imgUrl=this.invoiceObj['imageUrl'];
         }else{
           // 转化 url
           const res=await ApigetSignedUrl(fileUrl);

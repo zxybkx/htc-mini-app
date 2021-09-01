@@ -316,10 +316,10 @@ export default {
           this.tempInvoiceType=e.detail.value;
       },
       handleStartTime(e){
-          this.tempStartDate=e.detail.value;
+          this.tempStartDate=e.detail.value.replace(/\//g,'-');
       },
       handleEndTime(e){
-          this.tempEndDate=e.detail.value;
+          this.tempEndDate=e.detail.value.replace(/\//g,'-');
       },
       handleStatusSelect(e){
           const res=e.detail.value;

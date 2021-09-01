@@ -16,9 +16,8 @@
 
 	const forMatting=invoiceInfo=>{
 		let tempArr=invoiceInfo.alipay_ebpp_invoice_einvpackage_query_response.package_item_info_list;
-
+		console.log('////obj.file_download_url',invoiceInfo.alipay_ebpp_invoice_einvpackage_query_response.package_item_info_list);
 		return tempArr.map(obj => {
-			console.log('////obj.file_download_url',obj.file_download_url);
 			return {
 				invoiceDate: obj.invoice_output_info.invoice_date,
 				invoiceTypeMeaning: INVOICEKIND[obj.invoice_output_info.invoice_kind],
@@ -30,12 +29,12 @@
 				checkCode: obj.invoice_output_info.check_code,
 				invoiceAmount: obj.invoice_output_info.ex_tax_amount,
 				totalAmount: obj.invoice_output_info.sum_amount,
-				imageUrl: obj.invoice_output_info.invoice_img_url,
-				fileUrl:obj.file_download_url,
+				imageUrl: obj.invoice_output_info.invoice_img_url.replace('http','https'),
+				fileUrl:obj.file_download_url.replace('http','https'),
 				currency:'CNY',
-				buyerTaxNo:obj.invoice_output_info.payee_register_no,
-				salerAddressPhone: obj.invoice_output_info.payee_address_tel,
-				salerAccount: obj.invoice_output_info.payee_bank_name_account,
+				buyerTaxNo:obj.invoice_output_info.invoice_title.payer_register_no,
+				buyerAddressPhone: obj.invoice_output_info.invoice_title.payer_address_tel,
+				buyerAccount: obj.invoice_output_info.invoice_title.payer_bank_name_account,
 			}
 		});
 	}
@@ -50,7 +49,28 @@
 		},
 		onLaunch(options) {
 			console.log('App Launch',options);
-			
+			const updateManager = uni.getUpdateManager();
+			updateManager.onCheckForUpdate(function (res) {
+			// 请求完新版本信息的回调
+			console.log(res.hasUpdate);
+			});
+
+			updateManager.onUpdateReady(function (res) {
+				uni.showModal({
+					title: '更新提示',
+					content: '新版本已经准备好，请重启应用？',
+					showCancel:false,
+					success(res) {
+						if (res.confirm) {
+							// 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+							updateManager.applyUpdate();
+						}
+					}
+				});
+			});
+			updateManager.onUpdateFailed(function (res) {
+			// 新的版本下载失败
+			});
 		},
 		async onShow(options) {
 			console.log('App Show',options);
@@ -59,7 +79,7 @@
 				uni.showLoading();
 				const getInfores=await ApiGetAlipayInvoicePackage(options.query);
 				const tempRes=JSON.parse(getInfores.body);
-				
+				console.log('///tempRes',tempRes);
 				const backRes = forMatting(tempRes);
 				
                 getApp().globalData.currentInvoiceAllInfo=backRes;

@@ -69,7 +69,7 @@
     showIcon=true
     single=true
     scrollable=true
-    :speed=60
+    :speed=15
     :text="notice"
     @tap="handleNoticeList"
   />

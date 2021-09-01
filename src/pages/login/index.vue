@@ -32,8 +32,8 @@
         password: "",
         // username: "admin",//开发环境
         // password: "htcadmin666",//开发环境
-        username: "TEST_ADMIN",//测试环境
-        password: "test@hand.com",//测试环境
+        // username: "TEST_ADMIN",//测试环境
+        // password: "test@hand.com",//测试环境
 			}
 		},
 		computed: {},
@@ -61,6 +61,8 @@
           uni.setStorageSync('currentCompanyInfo',res[0]);
           uni.hideLoading();
           uni.redirectTo({url:'/pages/select-company/index'})
+        }else{
+          uni.hideLoading();
         }
       }
 		},

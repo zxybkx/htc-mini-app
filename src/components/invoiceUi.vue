@@ -241,11 +241,11 @@
       invoiceDate: "开票日期",
       totalAmount: "价税合计",
       invoiceAmount: "不含税金额",
+      salerName: "销售方",
       buyerName: "购买方",
       buyerTaxNo: '纳税人识别号',
-      salerName: "销售方",
-      salerAddressPhone: "地址、电话",
-      salerAccount: "开户行及银行账号"
+      buyerAddressPhone: "地址、电话",
+      buyerAccount: "开户行及银行账号"
     }
     export default{
         data(){

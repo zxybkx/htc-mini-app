@@ -36,7 +36,7 @@
             <div class="right">CNY {{info.totalAmount||info.subtotalAmount}}</div>
         </div>
         <div class="p1" v-if="uiTag">付款方：{{info.buyerName||''}}</div>
-        <div class="p1" v-if="uiTag">销售方：{{info.salerName||info.sellerName}}</div>
+        <div class="p1" v-if="uiTag">销售方：{{info.salerName||info.sellerName||''}}</div>
         <div class="p1" >发票代码：{{info.invoiceCode}}</div>
         <div class="p2" >发票号码：{{info.invoiceNo||info.invoiceNumber}}</div>
         <div class="p3" v-if="!uiTag">校验码:  {{info.checkCode}}</div>

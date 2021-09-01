@@ -96,7 +96,7 @@
         methods:{
             handleChange(e){
                 // this.invoiceObj.invoiceDate=e.detail.value;
-                this.$set(this.invoiceObj,'invoiceDate',e.detail.value)
+                this.$set(this.invoiceObj,'invoiceDate',e.detail.value.replace(/\//g,'-'))
                 // console.log(this.invoiceObj);
             },
             async handleCheck(){

@@ -1,14 +1,26 @@
-<style>
-
+<style lang="scss">
+.logoContainer{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background: #fff;
+    img{
+        height: 243rpx;
+        width: 221rpx;
+    }
+}
 </style>
 <template>
-    <div></div>
+    <div class="C-flex logoContainer">
+        <img src="@/static/img/brand.png" alt="">
+    </div>
 </template>
 <script>
 import { ApiLogin, ApiAlipayLogin, ApiGetTenants} from '@/api/index';
 export default{
     async created(){
         // excessive
+        uni.showLoading({title:'正在进入汇税通'});
         const self=this;
         my.getAuthCode({scopes: 'auth_base'})
         .then(res=>{
@@ -28,15 +40,18 @@ export default{
                         const res=await ApiGetTenants();
                         getApp().globalData.currentCompanyInfo=res[0];
                         uni.setStorageSync('currentCompanyInfo',res[0]);
+                        uni.hideLoading()
                         uni.redirectTo({url:'/pages/select-company/index'})
                         // wx.redirectTo({url:'/pages/index'});
                     }
                 })
             }else{
+                uni.hideLoading()
                 uni.redirectTo({url:`/pages/login/index?openId=${res.data}`});
             }
         })
         .catch (error=>{
+            uni.hideLoading()
             // 抛错
             console.log(error);
         })
