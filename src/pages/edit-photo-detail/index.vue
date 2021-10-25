@@ -112,11 +112,12 @@
                     if(checkResult.status == '0001'){
                         uni.hideLoading();
                         uni.showToast({title: '查验成功',icon: 'none',duration: 2000});
+                        checkResult.data.checkPass=1;//增加发票查验通过字段
                         getApp().globalData.currentInvoiceInfo=formatCheckObj(checkResult.data);  
                         // wx.redirectTo({
                         //     url:'/pages/photoInvoiceList'
                         // })
-                        uni.navigateBack();
+                        setTimeout(()=>{uni.navigateBack();},1000)
                     }else{
                         // 抛错
                         throw checkResult;

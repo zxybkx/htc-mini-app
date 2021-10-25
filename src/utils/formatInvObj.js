@@ -17,7 +17,8 @@ export const formatCheckObj = function (inv) {
     buyerTaxNo: inv['buyerTaxNo']||inv['sellerId'],
     salerAddressPhone: inv['salerAddressPhone'],
     salerAccount: inv['salerAccount'],
-    invoiceLinesInfoList:inv.invoiceLinesInfoList
+    invoiceLinesInfoList:inv.invoiceLinesInfoList,
+    checkPass:inv['checkPass']||0
   }
 }
 

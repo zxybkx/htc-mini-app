@@ -181,11 +181,18 @@
                             // 未判断出错情况
                         }
                     } else {
-                        //不存在这个发票，开始查验 
-                        const checkResult=await ApiCheckInv(VAT_INVOICEItem);
-                        if(checkResult.status == '0001'){
+                        //不存在这个发票，开始查验
+                        let checkResult={};
+                        if(VAT_INVOICEItem.checkPass){
+                            // 发票已经查验通过
+                            checkResult=VAT_INVOICEItem;
+                        }else{
+                            // 未查验
+                            checkResult=await ApiCheckInv(VAT_INVOICEItem);
+                        }
+                        if(checkResult.status == '0001'||checkResult.invoiceHeaderId){
                             //查验成功，开始上传
-                            const pushRes=await ApiPushInv(checkResult.data.invoiceHeaderId);
+                            const pushRes=await ApiPushInv(checkResult.invoiceHeaderId||checkResult.data.invoiceHeaderId);
                             if(pushRes.failed){
                                 // 抛错
                                 return {code:0,msg:pushRes.message}
