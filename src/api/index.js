@@ -104,7 +104,7 @@ export const ApiGetTenants = () => get(`/iam/hzero/v1/users/self-tenants`);
  * 获取公司列表
  */
 export const ApiGetCompanys = () =>{
-    return get(`/hmdm/v1/${getCompanyInfo().tenantId}/employee-infos/query-current-employee-info`, {
+    return get(`/hmdm/v1/${getCompanyInfo().tenantId}/employee-infos/query-current-employee-info-app`, {
         tenantId: getCompanyInfo().tenantId,
         lovCode: 'HMDM.CURRENT_EMPLOYEE'
     });

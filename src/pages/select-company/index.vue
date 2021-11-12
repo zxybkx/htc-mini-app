@@ -61,13 +61,13 @@ export default {
       
       const res=await ApiGetCompanys();
       
-      const test=res.filter(item=>{
+      const test=res.content.filter(item=>{
         return !['企业001','演示环境测试账号1'].includes(item.companyName);
       })
       this.companys=test;
 
       // this.companys=res;
-      this.company = res.find(
+      this.company = res.content.find(
           o => o.companyCode == this.companyCode)
     },
     methods: {
