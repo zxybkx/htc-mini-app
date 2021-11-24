@@ -81,7 +81,7 @@
       },
       async handleUploadRecord(){
         try {
-          let chooseResult={};let error={};
+          let chooseResult={};let error={};let tag={};
           // #ifdef MP-ALIPAY
           [error,chooseResult]=await uni.chooseImage({
             count: 1,
@@ -91,7 +91,7 @@
           this.filePath=chooseResult.tempFilePaths[0];
           // #endif 
           // #ifndef MP-ALIPAY
-          let [error,tag]=await uni.showModal({
+          [error,tag]=await uni.showModal({
             title: '提示',
             content: '选择上传',
             cancelText:'其他方式',
