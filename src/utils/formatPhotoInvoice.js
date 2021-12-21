@@ -268,7 +268,7 @@ export const eachChildInfos={
     //'航空客运机票行程单'
     [invoiceType[4]]: [
         {
-            name: 'agentCode',
+            name: 'serialNumber',
             dbName: 'invoiceCode',
             label: '发票代码',
             type: 'string',
@@ -300,14 +300,16 @@ export const eachChildInfos={
             dbName: 'taxAmount',
             label: '税额合计(税额)',
             type: 'digit',
-            // required: true,
+            disabled:true,
+            hidden:true
         },
         {
             name: 'invoiceAmount',
             dbName: 'invoiceAmount',
-            label: '金额不含税',
+            label: '不含税金额',
             type: 'digit',
-            // required: true,
+            disabled:true,
+            hidden:true
         },
         {
             name: 'passengerName',
@@ -324,23 +326,28 @@ export const eachChildInfos={
         },
         {
             name: 'total',
-            dbName: 'totalAmount',
-            label: '总金额(含机建)',
-            type: 'digit',
-            // required: true,
-        },
-        {
-            name: 'fare',
-            dbName: 'fare',
-            label: '价税合计(不含机建价税合计)',
+            dbName: 'total',
+            label: '总金额',
             type: 'digit',
             required: true,
         },
+
         {
-            name: 'devFund',
-            dbName: 'aviationDevelopmentFund',
+            name: 'totalAmount',
+            dbName: 'totalAmount',
+            label: '价税合计',
+            type: 'digit',
+            // required: true,
+            disabled:true,
+            hidden:true
+        },
+
+        {
+            name: 'nonDeductible',
+            dbName: 'nonDeductible',
             label: '不可抵扣',
             type: 'digit',
+            hidden:true
         },
         {
             name: 'flightStr',
@@ -355,9 +362,17 @@ export const eachChildInfos={
             type: 'string',
         },
         {
-            name: 'insurance',
-            dbName: 'insurance',
-            label: '保险费',
+            name: 'fare',
+            dbName: 'fare',
+            label: '票价',
+            type: 'string',
+            required: true,
+        },
+        {
+            name: 'fuelSurcharge',
+            dbName: 'fuelSurcharge',
+            label: '燃油附加费',
+            required: true,
             type: 'digit',
         },
         {
@@ -368,11 +383,25 @@ export const eachChildInfos={
             type: 'digit',
         },
         {
+            name: 'otherTaxes',
+            dbName: 'otherTaxes',
+            label: '其他税费',
+            type: 'digit',
+            required: true,
+        },
+        {
+            name: 'insurance',
+            dbName: 'insurance',
+            label: '保险费',
+            type: 'digit',
+        },
+        {
             name: 'SalesCode',
             dbName: 'salerTaxNo',
             label: '销售单位代号',
             type: 'string',
         },
+        
     ],
     // '客运发票'
     [invoiceType[5]]: [

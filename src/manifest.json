@@ -59,6 +59,9 @@
         "usingComponents" : true
     },
     "h5" : {
+        "devServer" : {
+            "disableHostCheck" : true
+        },
         "router" : {
             "base" : ""
         }

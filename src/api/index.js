@@ -36,6 +36,12 @@ export const ApiWechatLogin = code => get(`/hcan/v1/0/get-we-chat/wechat-login?c
 
 /**
  * 
+ * @param {*} code 
+ * @returns 
+ */
+ export const ApiWXworkLogin = code => get(`/hcan/v1/0/get-we-chat/get-user-id?code=${code}`);
+/**
+ * 
  * 支付宝小程序通过授权code获取相关信息userId和accesstoken
  */
 
@@ -110,10 +116,14 @@ export const ApiGetCompanys = () =>{
     });
 }
 /**
+ * 停机维护公告
+ */
+ export const ApiGetDowntimeNotice=loginNum=>post(`/hmdm/v1/${getCompanyInfo().tenantId}/pull-notice-message/pull?loginNum=${loginNum}`)
+/**
   * 获取公告
   */
 export const ApiGetNotice = () =>
-    get('/hmsg/v1/0/notices?containsDeletedDataFlag=0&page=0&receiverTypeCode=ANNOUNCE&size=1');
+    get(`/hmsg/v1/0/notices?containsDeletedDataFlag=0&receiverTypeCode=ANNOUNCE&statusCode=PUBLISHED&title=${encodeURI('小程序公告-HTC')}`);
 
 /**
   * 获取公告详情

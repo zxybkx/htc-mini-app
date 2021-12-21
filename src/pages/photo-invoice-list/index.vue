@@ -267,7 +267,6 @@
                             ...getApp().globalData.currentInvoiceInfo
                         }
                         this.invoiceInfoArray=getApp().globalData.currentInvoiceAllInfo;
-
                     }
                 } catch (e) {
                     uni.showModal({title: '错误',content: e.errMsg,showCancel: false})
@@ -314,10 +313,18 @@
                         }
                         if(outItem.ocrType==='FLIGHT_ITINERARY'){
                             // 飞机票税额合计处理
-                            const taxAmount = (outItem.fare/(1+Number(TaxRateRes.taxRate))*TaxRateRes.taxRate).toFixed(2);
-                            outItem.invoiceAmount=outItem.fare-taxAmount;
+                            if(Number(outItem.total)===Number(outItem.fare)+Number(outItem.aviationDevelopmentFund)+Number(outItem.fuelSurcharge)+Number(outItem.otherTaxes)){
+                                outItem.totalAmount=Number(outItem.fare)+Number(outItem.fuelSurcharge);
+                                outItem.nonDeductible=Number(outItem.aviationDevelopmentFund)+Number(outItem.otherTaxes);
+                            }else{
+                                outItem.totalAmount=Number(outItem.total)-Number(outItem.otherTaxes)
+                                outItem.nonDeductible=Number(outItem.otherTaxes);
+                            }
+                            const taxAmount = (outItem.totalAmount/(1+Number(TaxRateRes.taxRate))*TaxRateRes.taxRate).toFixed(2);
                             outItem.taxAmount=taxAmount;
+                            outItem.invoiceAmount=outItem.totalAmount-taxAmount;
                         }
+                        
                         outItem.invoiceTypeMeaning=outItem.resultInfo.invoiceTypeMeaning||outItem.resultInfo.type;
                         tempInvoiceOriginInfoArray.push(outItem);
                         this.invoiceInfoArray=tempInvoiceOriginInfoArray;

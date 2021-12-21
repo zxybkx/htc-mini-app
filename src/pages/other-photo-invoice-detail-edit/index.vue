@@ -60,7 +60,7 @@
     <div class="page">
         <div class="editBox">
             <div v-for="(item,index) in viewUiArray" :key="index">
-                <div class="C-flex simpleInputBox">
+                <div class="C-flex simpleInputBox" v-if="!item.hidden">
                     <div class="left">
                         <text v-if="item.required">*</text>
                         <text v-else></text>

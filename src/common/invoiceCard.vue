@@ -33,7 +33,8 @@
             <div class="left">
                 <slot name="title"></slot>
             </div>
-            <div class="right">CNY {{info.totalAmount||info.subtotalAmount}}</div>
+            <div class="right" v-if="info.ocrType==='FLIGHT_ITINERARY'">CNY {{info.total}}</div>
+            <div class="right" v-else>CNY {{info.totalAmount||info.subtotalAmount}}</div>
         </div>
         <div class="p1" v-if="uiTag">付款方：{{info.buyerName||''}}</div>
         <div class="p1" v-if="uiTag">销售方：{{info.salerName||info.sellerName||''}}</div>

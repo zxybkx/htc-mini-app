@@ -201,7 +201,7 @@
                 <view class="hdw-left">
                     <view class="detail-line">
                         <view class="common-label" style="width:208rpx;">价税合计：</view>
-                        <view class="detail-text">CNY <view class="dt-sp">{{invoiceObj.totalAmount||invoiceObj.fare}}</view></view>
+                        <view class="detail-text">CNY <view class="dt-sp">{{invoiceObj.totalAmount}}</view></view>
                     </view>
                     <view class="detail-line">
                         <view class="common-label" style="width:208rpx;">不含税金额：</view>
@@ -254,6 +254,14 @@
         },
         created(){
             const tempInfo=getApp().globalData.currentInvoiceInfo;
+            // 飞机行程单 不可抵扣字段
+            if(tempInfo.invoiceType==='FLIGHT_ITINERARY'){
+              if(Number(tempInfo.total)===Number(tempInfo.fare)+Number(tempInfo.aviationDevelopmentFund)+Number(tempInfo.fuelSurcharge)+Number(tempInfo.otherTaxes)){
+                  tempInfo.nonDeductible=Number(tempInfo.aviationDevelopmentFund)+Number(tempInfo.otherTaxes);
+              }else{
+                  tempInfo.nonDeductible=Number(tempInfo.otherTaxes);
+              }
+            }
             this.invoiceObj=tempInfo;
             const invoiceArrayObj=eachChildInfos[tempInfo.ocrType].map(
               item=>({

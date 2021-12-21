@@ -57,6 +57,22 @@ const uniRequest=async ({url,params})=>{
       content: res.data.message,
       showCancel: false,
     });
+    if(res.data.error==='unauthorized'&&res.data.code==='hoth.warn.passwordError'){
+      console.log(getCurrentPages()[0].$page.fullPath)
+      uni.showModal({
+        title: '错误',
+        content: res.data.message,
+        showCancel: false,
+      }).then(res=>{
+        if(getCurrentPages()[0].$page.fullPath==='/pages/login/index'){
+          // wx.reLaunch({url:'/pages/login'});
+        }else{
+          uni.reLaunch({url:'/pages/login/index'});
+        }
+      });
+      uni.hideLoading()
+      return;
+    }
     // if(res.data.failed){
     //   uni.showModal({
     //     title: '错误',
@@ -73,7 +89,7 @@ const uniRequest=async ({url,params})=>{
         showCancel: false,
       });
       // 未授权清缓存
-      uni.clearStorage();
+      uni.clearStorage(); 
       // token过期进入登录过度页
       uni.reLaunch({url:'/pages/excessive/index'});
     }

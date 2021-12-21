@@ -209,7 +209,11 @@ export default {
       // 获取公告
       ApiGetNotice()
       .then(res=>ApiGetNoticeDetail(res.content[0].noticeId))
-      .then(res=>this.notice=res.noticeBody.replace(/<p>|<\/p>/g,''));
+      .then(res=>{
+        if(new Date().getTime()<new Date(res.endDate.replace(/-/g, "/")).getTime()){
+          this.notice=res.noticeBody.replace(/<p>|<\/p>/g,'')
+        }
+      });
     }
 }
 </script>

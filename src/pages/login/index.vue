@@ -94,7 +94,7 @@ page{
 }
 
 .container{  
-  padding: 24rpx;
+  padding:0px 24rpx;
   width: 100%;
   height: 100%;
   display: flex;

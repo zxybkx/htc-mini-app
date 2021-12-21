@@ -1,5 +1,14 @@
 <template>
   <view class="container">
+      <view class="modalContainer" v-if="modalTag">
+        <view class="modal">
+          <p class="modalTitle">{{modalTitle}}</p>
+          <div class="modalContent">
+            <p v-for="(item,index) in modalContent" :key='index'>{{item}}</p>
+          </div>
+          <p class="modalBtn" @click="closeModal">确定</p>
+        </view>
+      </view>
       <view class="title">
           <view class="avatar">
             <!-- <van-image round width="50px" height="50px" fit="cover" src="https://img.yzcdn.cn/vant/cat.jpeg" /> -->
@@ -43,13 +52,16 @@
 </template>
 
 <script>
-import {ApiGetCompanys} from '@/api'
+import {ApiGetCompanys,ApiGetDowntimeNotice} from '@/api'
 export default {
   data() {
     return {
       companyCode: "HAND",
       companys: [],
       company: {},
+      modalTag:false,
+      modalTitle:'',
+      modalContent:'',
     }
   },
   async onLoad(e){
@@ -68,9 +80,23 @@ export default {
 
       // this.companys=res;
       this.company = res.content.find(
-          o => o.companyCode == this.companyCode)
+          o => o.companyCode == this.companyCode);
+      const currentCompanyInfo= uni.getStorageSync('currentCompanyInfo');
+      currentCompanyInfo&&ApiGetDowntimeNotice(currentCompanyInfo.tenantNum)
+      .then(res=>{
+        if(res.status&&res.status===200){
+          this.modalTag=true;
+          this.modalTitle=res.noticeTitle;
+          const temparray=res.noticeContext.split('\n');
+          console.log(temparray);
+          this.modalContent=temparray;
+        }
+      });
     },
     methods: {
+      closeModal(){
+        this.modalTag=false;
+      },
       // 公司切换
       handleSelect(event){
         const companyCode=event.detail.value;
@@ -94,6 +120,51 @@ export default {
 </script>
 
 <style lang="scss">
+.modalContainer{
+  width: 100%;
+	height: 100%;
+  z-index: 999;
+	position: fixed;
+  background:rgba(0,0,0,0.6);
+  top: 0;
+	left: 0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  
+}
+.modal{
+  width: 300px;
+  background:#fff;
+  box-sizing:border-box;
+  border-radius :6px;
+  overflow: hidden;
+  .modalTitle{
+    text-align:center;
+    line-height :40px;
+    color:  #2b2b2b;
+    border-bottom:1px solid #eee;
+    margin-bottom :10px;
+  }
+  .modalContent{
+    padding:6px;
+    min-height :100px;
+    max-height :200px;
+    word-break:break-all;
+    overflow-y :auto;
+    font-size :14px;
+    color:  #2b2b2b;
+  }
+  .modalBtn{
+    border-top:1px solid #eee;
+    margin-top :10px;
+    text-align:center;
+    line-height :40px;
+    color :#fff;
+    font-size:16px;
+    background :#1989fa;
+  }
+}
 .container{ 
   /* padding: 16px; */
   padding: 24rpx;
