@@ -1,3 +1,5 @@
+import {BrowserEnv} from './browserEnv';
+const browserEnv=BrowserEnv();
 // 拍发票各种发票的类型的判定字段
 
 export const invoiceType=[
@@ -19,7 +21,7 @@ export const invoiceType=[
  * WECHAT_PROGRAM        微信小程序        
  * ENTERPRISE_WECHAT     企业微信        
  * NAILS                 钉钉    
- * 
+ * H5                    H5移动网页
  */
 
 console.log('编译平台',process.env.VUE_APP_PLATFORM);
@@ -30,9 +32,21 @@ switch (process.env.VUE_APP_PLATFORM) {
         // 支付宝平台
         SOURCE='ALIPAY_PROGRAM';
         break;
-
+    case 'H5':
+        if(browserEnv===1){
+            // 企业微信
+            SOURCE='ENTERPRISE_WECHAT';
+        }else{
+            // 钉钉
+            SOURCE='NAILS';
+        }
+        break;
     default:
+        // 默认为企业微信
+        SOURCE='ENTERPRISE_WECHAT';
         break;
 }
 export {SOURCE};
-export const ISV_APP_CODE='huishuitong_mini'
+export const ISV_APP_CODE='huishuitong_mini';
+// 可以使用环境变量替换
+export const WXAPPID = 'wx379630708e7952b7'

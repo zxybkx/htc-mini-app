@@ -89,6 +89,8 @@ export const ApiBackAutoLogin = data => {
         'Content-Type': 'application/x-www-form-urlencoded'
     })
 };
+//查询用户关系
+export const ApiGetUserReleations = data => get(`/hmdm/v1/0/user-releations?releationType=${data.type}&cropId=${data.cropId}&appId=${data.appId}`)
 /**
  * 
  * 关联用户的openId与密码和用户名等相关信息
@@ -314,3 +316,6 @@ export const ApiGetIsvToken= () =>post(`/hcan/v1/0/alipay/get_invoice_token?isvA
 
 //
 export const ApiGetAlipayInvoicePackage= data =>post(`/hcan/v1/0/alipay/query_invoice_package?encryptedUid=${URLDecoder.decode(data.encryptedUid, "utf-8")}&packageId=${data.packageId}`)
+
+// 企业微信sdk
+export const ApiGetTicket = () =>get( `/hcan/v1/query-wx-app-ticket/request-jsapi-ticket/${getCompanyInfo().companyCode}`)

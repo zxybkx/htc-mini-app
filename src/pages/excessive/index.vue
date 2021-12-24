@@ -16,43 +16,146 @@
     </div>
 </template>
 <script>
-import { ApiLogin, ApiAlipayLogin, ApiGetTenants,ApiWXworkLogin} from '@/api/index';
+import {
+    ApiLogin,
+    ApiAlipayLogin,
+    ApiGetTenants,
+    ApiWXworkLogin,
+    ApiGetUserReleations
+} from '@/api/index';
+import {BrowserEnv} from '../../utils/browserEnv';
+
+// import { WXAPPID } from '../../utils/constant';
+const ToolGetUrlParam=(url,code)=>{
+    url = new URL(url);
+    let params = new URLSearchParams(url.search.slice(1));
+    return params.getAll(code)[0]
+};
+const browserEnv=BrowserEnv();
 export default{
     async created(){
         // excessive
         uni.showLoading({title:'正在进入汇税通'});
-        // this.subWXwork();
+        // #ifdef MP-ALIPAY
         this.subAlipay();
+        // #endif
+        // #ifdef H5
+        switch (browserEnv) {
+            case 1:
+                this.subWXwork();
+                break;
+            case 2:
+                this.subDingding();
+                break;
+            default:
+                this.subWXwork();
+                break;
+        }
+        // #endif
     },
     methods: {
         // 企业微信流程
-        subWXwork(){
-            uni.redirectTo({url:`/pages/login/index`});
-            // let code; 
-            // if (window.location.href.includes('code')) {
-            //     console.log('window.location.href',window.location.search);
-            //     let params = new URLSearchParams(window.location.search);
-            //     code=params.getAll('code')[0];
-            // }else{
-            //     const authUrl =
-            //     'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
-            //     'wx96bc44831cac79ea' +
-            //     '&redirect_uri=' +
-            //     encodeURI('http://jade.free.svipss.top') +
-            //     '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
-            //     window.location.href = authUrl;
-            //     return;
-            // }
-            // ApiWXworkLogin(code).then(res=>{
-            //     console.log('res',res);
-            //     alert(JSON.stringify(res))
-            // });
-            // return;
+        async subWXwork(){
+            // console.log('window.location.href', window.location.href);
+            let code = ToolGetUrlParam(window.location.href, 'code');
+            if (code) {
+                const userInfo=await ApiWXworkLogin(code);
+                let corpId = userInfo.corpId;
+                let uid = userInfo.open_userid;
+                const getRelRes=await ApiGetUserReleations({
+                    type:'webchat',
+                    cropId:corpId,
+                    appId:uid
+                });
+                if(getRelRes.empty){
+                    uni.navigateTo({
+                      url: `/pages/login/index?type=webchat&uid=${uid}&corpId=${corpId}`
+                    });
+                }else{
+                    const content = getRelRes.content[0];
+                    ApiLogin({
+                      username: content.loginName,
+                      password: content.rsaPassword
+                    })
+                    .then(async backRes=>{
+                        if(!backRes.error){
+                            // 当请求成功
+                            const res=await ApiGetTenants();
+                            getApp().globalData.currentCompanyInfo=res[0];
+                            uni.setStorageSync('currentCompanyInfo',res[0]);
+                            
+                            uni.hideLoading()
+                            uni.redirectTo({url:'/pages/select-company/index'})
+                            // wx.redirectTo({url:'/pages/index'});
+                        }else{
+                            // 当请求失败
+                            uni.showModal({
+                                title: '提示',
+                                content: '自动登录出错',
+                                showCancel: false,
+                                success: function () {
+                                    uni.navigateTo({
+                                        url: `/pages/login/index?type=webchat&uid=${uid}&corpId=${corpId}`
+                                    });
+                                }
+                            });
+                        }
+                    })
+                }
+            }
         },
         // 钉钉流程
-        subDingding(){
-            
-            uni.redirectTo({url:`/pages/login/index`});
+        async subDingding(){
+            // uni.redirectTo({url:`/pages/login/index`});
+            const href = window.location.href;
+            console.log('钉钉href', href);
+            const ddCorpid = ToolGetUrlParam(href, 'corpid');
+            console.log('钉钉corpid', ddCorpid);
+            const dingId = ToolGetUrlParam(href, 'dingId');
+            console.log('钉钉dingId', dingId);
+            if (ddCorpid && dingId) {
+                const getRelRes=await ApiGetUserReleations({
+                    type:'ding',
+                    cropId:ddCorpid,
+                    appId:dingId
+                })
+                if(getRelRes.empty){
+                    uni.navigateTo({
+                        url: `/pages/login/index?uid=${dingId}&corpId=${ddCorpid}&type=ding`
+                    });
+                }else{
+                    const content = res.content[0];
+                    const loginRes =await ApiLogin({
+                        username: content.loginName,
+                        password: content.rsaPassword
+                    });
+                    if(!loginRes.error){
+                        // 当请求成功
+                        const res=await ApiGetTenants();
+                        getApp().globalData.currentCompanyInfo=res[0];
+                        uni.setStorageSync('currentCompanyInfo',res[0]);
+                        
+                        uni.hideLoading()
+                        uni.redirectTo({url:'/pages/select-company/index'})
+                        // wx.redirectTo({url:'/pages/index'});
+                    }else{
+                        // 当请求失败
+                        uni.showModal({
+                            title: '提示',
+                            content: '自动登录出错',
+                            showCancel: false,
+                            success: function () {
+                                uni.navigateTo({
+                                    url: `/pages/login/index?uid=${dingId}&corpId=${ddCorpid}&type=ding`
+                                });
+                            }
+                        });
+                    }
+                }
+            } else {
+                // console.log('跳转的链接没有ddCorpid 和 dingId');
+                uni.navigateTo({ url: '/pages/login/index' })
+            }
         },
         // 支付宝流程
         subAlipay(){
@@ -69,7 +172,7 @@ export default{
                         password:res.data.rsaPassword
                     })
                     .then(async backRes=>{
-                        if(!res.error){
+                        if(!backRes.error){
                             // 当请求成功
                             const res=await ApiGetTenants();
                             getApp().globalData.currentCompanyInfo=res[0];
@@ -89,7 +192,7 @@ export default{
                 // 抛错
                 console.log(error);
             })
-        }
+        },
     }
 }
 </script>

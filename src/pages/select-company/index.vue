@@ -52,7 +52,8 @@
 </template>
 
 <script>
-import {ApiGetCompanys,ApiGetDowntimeNotice} from '@/api'
+import {ApiGetCompanys,ApiGetDowntimeNotice} from '@/api';
+import { InitWxJsApi } from '../../utils/wxsdk';
 export default {
   data() {
     return {
@@ -111,6 +112,9 @@ export default {
         getApp().globalData.tipInvoiceUser='';//是否提示发票持有人信息,
         getApp().globalData.currentCompanyInfo = this.company
         uni.setStorageSync('currentCompanyInfo',this.company);
+        // 当企业微信选择企业 进行SDK授权 
+        InitWxJsApi();
+        
         uni.reLaunch({
           url: '/pages/index/index',
         });
