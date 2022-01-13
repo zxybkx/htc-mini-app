@@ -1,6 +1,6 @@
 <style lang="scss">
   .inv-detail{
-    margin-bottom: 140rpx;
+    padding-bottom: 140rpx;
     height: 100%;
     background: #f2f2f2;
     overflow-y: auto;

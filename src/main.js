@@ -28,7 +28,7 @@ switch (process.env.NODE_ENV) {
   case 'development':
     initConsole();
     break
-  case 'prod':
+  case 'production':
     break
   default:
     initConsole();

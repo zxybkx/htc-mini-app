@@ -30,10 +30,13 @@
 			return {
 				username: "",
         password: "",
+        type:"webchat",
+        uid:'',
+        corpId:'',
         // username: "admin",//开发环境
         // password: "htcadmin666",//开发环境
-        // username: "TEST_ADMIN",//测试环境
-        // password: "test@hand.com",//测试环境
+        username: "TEST_ADMIN",//测试环境
+        password: "test@hand.com",//测试环境
 			}
 		},
 		computed: {},
@@ -53,11 +56,28 @@
           const res=await ApiGetTenants();
           getApp().globalData.currentCompanyInfo=res[0];
           // 将openId与用户相关信息绑定
-          await ApiReleationsSave({
-            openId:this.openId,
+          let releationObj={};
+          // #ifdef MP-ALIPAY
+          releationObj={
+            appId:this.openId,
+            cropId:this.openId,
             loginName:this.username,
-            pwd:this.password,
-          })
+            releationType:this.type,
+            rsaPassword:this.password,
+            tenantId:0
+          };
+          // #endif
+          // #ifdef H5
+          releationObj={
+            appId:this.uid,
+            cropId:this.corpId,
+            loginName:this.username,
+            releationType:this.type,
+            rsaPassword:this.password,
+            tenantId:0
+          };
+          // #endif
+          await ApiReleationsSave(releationObj);
           uni.setStorageSync('currentCompanyInfo',res[0]);
           uni.hideLoading();
           uni.redirectTo({url:'/pages/select-company/index'})
@@ -67,7 +87,13 @@
       }
 		},
     onLoad(options){
-      const self=this;
+      // const self=this;
+      if(options.type){
+        this.type =options.type;
+        this.uid=options.uid;
+        this.corpId=options.corpId;
+      }
+      // #ifdef MP-ALIPAY
       if(options.openId){
         this.openId=options.openId;
       }else{
@@ -84,6 +110,7 @@
           console.log('code获取出错',err);
         })
       }
+      // #endif
     }
 	}
 </script>

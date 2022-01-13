@@ -95,14 +95,7 @@ export const ApiGetUserReleations = data => get(`/hmdm/v1/0/user-releations?rele
  * 
  * 关联用户的openId与密码和用户名等相关信息
  */
-export const ApiReleationsSave=data=>post(`/hmdm/v1/0/user-releations/save`,{
-    appId:data.openId,
-    cropId:data.openId,
-    loginName:data.loginName,
-    releationType:'alipay',
-    rsaPassword:data.pwd,
-    tenantId:0
-});
+export const ApiReleationsSave=data=>post(`/hmdm/v1/0/user-releations/save`,data);
 /**
  * 获取租户列表
  */
@@ -267,6 +260,9 @@ export const ApiBase64 = data => fileUpload(`/hcan/v1/${getCompanyInfo().tenantI
 // ofd发票识别
 export const ApiOfdResolver = data => post(`/hcan/v1/${getCompanyInfo().tenantId}/ofd-invoice-resolver/resolver-encrypted?companyCode=${getCompanyInfo().companyCode}&employeeNumber=${getCompanyInfo().employeeNum}&encryptCode=0`,
     data)
+// pdf发票识别    
+export const ApiPdfResolver = data => post(`/hcan/v1/${getCompanyInfo().tenantId}/invoice-ocr/invoice-resolver?companyCode=${getCompanyInfo().companyCode}&employeeNumber=${getCompanyInfo().employeeNum}&encryptCode=0`,
+    data)
 // ofd文件url转jpg
 export const ApiOfdUrlToJpg = url => post(`/hcan/v1/${getCompanyInfo().tenantId}/ofd-invoice-resolver/url-to-jpg?companyCode=${getCompanyInfo().companyCode}&employeeNumber=${getCompanyInfo().employeeNum}&file=${url}&encryptCode=0`,{})
 
@@ -319,3 +315,7 @@ export const ApiGetAlipayInvoicePackage= data =>post(`/hcan/v1/0/alipay/query_in
 
 // 企业微信sdk
 export const ApiGetTicket = () =>get( `/hcan/v1/query-wx-app-ticket/request-jsapi-ticket/${getCompanyInfo().companyCode}`)
+
+//企业微信批量查询电子发票
+export const ApiGetWxInfoBatch=data=>post(`/hcan/v1/wechat/getInvoice?companyCode=${getCompanyInfo().companyCode}`,
+    data)

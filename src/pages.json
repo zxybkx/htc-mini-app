@@ -39,7 +39,17 @@
 		}, {
 			"path": "pages/import-ofd/index",
 			"style": {
-				"navigationBarTitleText": "OFD文件"
+				"navigationBarTitleText": "OFD/PDF文件"
+			}
+		}, {
+			"path": "pages/ofd-invoice-list/index",
+			"style": {
+				"navigationBarTitleText": "OFD/PDF识别列表"
+			}
+		},{
+			"path": "pages/ofd-check-seal/index",
+			"style": {
+				"navigationBarTitleText": "发票档案"
 			}
 		}, {
 			"path": "pages/import-invoice/index",

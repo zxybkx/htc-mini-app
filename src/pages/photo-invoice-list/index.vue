@@ -258,7 +258,7 @@
                     const value = uni.getStorageSync('currentEditIndex');
                     if(index!==value) return;
                     // 将编辑的发票信息赋值更新
-                    if (value!=='') {
+                    if (value!==''&&JSON.stringify(getApp().globalData.currentInvoiceInfo)!=='{}') {
                         // 需要将扫描的图片url拼接进去
                         getApp().globalData.currentInvoiceAllInfo[value]={
                             ocrType:getApp().globalData.currentInvoiceAllInfo[value].ocrType,

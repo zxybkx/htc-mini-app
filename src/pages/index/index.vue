@@ -69,7 +69,7 @@
     showIcon=true
     single=true
     scrollable=true
-    :speed=15
+    :speed=5
     :text="notice"
     @tap="handleNoticeList"
   />
@@ -101,14 +101,24 @@
       </view>
       <uni-icons type="arrowright" color="#9e9e9e" size="50rpx" />
     </view>
-    <view class="option" @tap="handleJump(3)" v-if='false&&showOFDInvoice'>
+    <!-- <view class="option" @tap="handleJump(3)" v-if='showOFDInvoice'>
       <uni-icons type="paperclip" color="#1e88e5" size="50rpx" />
       <view class="option-texts">
-        <view class="option-text-title">OFD 文件</view>
+        <view class="option-text-title">OFD 文件1</view>
         <view class="option-text-sub">选自 OFD 发票文件自动识别</view>
       </view>
       <uni-icons type="arrowright" color="#9e9e9e" size="50rpx" />
+    </view> -->
+    <!-- #ifdef H5 -->
+    <view class="option" @tap="handleJump(3)" v-if='showOFDInvoice'>
+      <uni-icons type="paperclip" color="#1e88e5" size="50rpx" />
+      <view class="option-texts">
+        <view class="option-text-title">OFD/PDF 文件</view>
+        <view class="option-text-sub">选自 OFD/PDF 发票文件自动识别</view>
+      </view>
+      <uni-icons type="arrowright" color="#9e9e9e" size="50rpx" />
     </view>
+    <!--  #endif -->
     <view class="option" @tap="handleJump(4)" v-if='showMyInvoice'>
       <uni-icons type="list" color="#1e88e5" size="50rpx" />
       <view class="option-texts">
@@ -211,7 +221,7 @@ export default {
       .then(res=>ApiGetNoticeDetail(res.content[0].noticeId))
       .then(res=>{
         if(new Date().getTime()<new Date(res.endDate.replace(/-/g, "/")).getTime()){
-          this.notice=res.noticeBody.replace(/<p>|<\/p>/g,'')
+          this.notice=res.noticeBody.replace(/<p>|<\/p>/g,'').replace(/&ldquo;|&rdquo;/g,'\"');
         }
       });
     }

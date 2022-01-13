@@ -24,6 +24,9 @@ import {formatCheckObj,formatExistInvObj} from '@/utils/formatInvObj';
 //扫发票二维码对应字段
 const invObjKeys = ['version','invoiceType','invoiceCode','invoiceNumber',
     'invoiceAmount','invoiceDate','checkCode','crc'];
+const jWeixin = require('weixin-js-sdk');
+import {BrowserEnv} from '../../utils/browserEnv';
+const browserEnv=BrowserEnv();
 export default {
     data(){
         return{
@@ -36,6 +39,63 @@ export default {
     },
     methods:{
       async HandleStartUse(){
+        // #ifdef MP-ALIPAY
+        this.subAlipay();
+        // #endif
+        // #ifdef H5
+        switch (browserEnv) {
+            case 1:
+                this.subWXwork();
+                break;
+            case 2:
+                this.subDingding();
+                break;
+            default:
+                this.subWXwork();
+                break;
+        }
+        // #endif
+      },
+      async subWXwork(){
+        console.log(jWeixin);
+        const self=this;
+        jWeixin.scanQRCode({
+          desc: '请将您的发票二维码置于取景框中',
+          needResult: 1, // 默认为 0，扫描结果由企业微信处理，1 则直接返回扫描结果，
+          scanType: ['qrCode'], // 可以指定扫二维码还是一维码，默认二者都有
+          success: async res => {
+            //格式化二维码数据
+            let invObj = {}
+            res.resultStr.split(',').forEach((key, index) => {
+              invObj[invObjKeys[index]] = key;
+            })
+            self.subDispose(invObj);
+          },
+          error: res =>{
+            console.log(res)
+            res.message&&uni.showModal({title: '错误',content: '扫码错误',showCancel: false})
+          }
+        })
+      },
+      subDingding(){
+        const self=this;
+        dd.biz.util.scan({
+          type: 'qrCode',
+          onSuccess: async res => {
+            //格式化二维码数据
+            let invObj = {}
+            res.text.split(',').forEach((key, index) => {
+              invObj[invObjKeys[index]] = key;
+            })
+            self.subDispose(invObj);
+          },
+          onFaild: res =>{
+            console.log(res)
+            res.message&&uni.showModal({title: '错误',content: '扫码错误',showCancel: false})
+          }
+        })
+      },
+      async subAlipay(){
         try {
           const [error,scanRes]=await uni.scanCode({onlyFromCamera: true,scanType:['qrCode']});
           if(error) throw error;
@@ -44,6 +104,14 @@ export default {
           scanRes.result.split(',').forEach((key, index) => {
             invObj[invObjKeys[index]] = key;
           })
+          this.subDispose(invObj);
+        } catch (error) {
+          error.message&&uni.showModal({title: '错误',content: '扫码错误',showCancel: false})
+        }
+      },
+      async subDispose(invObj){
+        try {
+          
           //根据识别出的发票代码、发票号码，到对应“当前企业”发票池查找对应发票记录
           uni.showLoading({title: '开始处理'})
           const serchResult=await ApiIsInvExist(invObj);

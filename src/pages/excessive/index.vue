@@ -34,6 +34,7 @@ const ToolGetUrlParam=(url,code)=>{
 const browserEnv=BrowserEnv();
 export default{
     async created(){
+        console.log('href', window.location.href);
         // excessive
         uni.showLoading({title:'正在进入汇税通'});
         // #ifdef MP-ALIPAY
@@ -56,6 +57,8 @@ export default{
     methods: {
         // 企业微信流程
         async subWXwork(){
+            // uni.redirectTo({url:`/pages/login/index`});
+            // return;
             // console.log('window.location.href', window.location.href);
             let code = ToolGetUrlParam(window.location.href, 'code');
             if (code) {
@@ -102,13 +105,15 @@ export default{
                         }
                     })
                 }
+            }else {
+                // console.log('跳转的链接没有ddCorpid 和 dingId');
+                uni.navigateTo({ url: '/pages/login/index' })
             }
         },
         // 钉钉流程
         async subDingding(){
             // uni.redirectTo({url:`/pages/login/index`});
             const href = window.location.href;
-            console.log('钉钉href', href);
             const ddCorpid = ToolGetUrlParam(href, 'corpid');
             console.log('钉钉corpid', ddCorpid);
             const dingId = ToolGetUrlParam(href, 'dingId');
@@ -184,7 +189,7 @@ export default{
                     })
                 }else{
                     uni.hideLoading()
-                    uni.redirectTo({url:`/pages/login/index?openId=${res.data}`});
+                    uni.redirectTo({url:`/pages/login/index?type=alipay&openId=${res.data}`});
                 }
             })
             .catch (error=>{

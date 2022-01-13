@@ -2,6 +2,9 @@
 .myContainer{
     background-color: #F6F6F6;
     padding-bottom: 120rpx;
+    height: 100%;
+    border: 20rpx solid #F6F6F6;
+    border-radius: 10rpx;
 }
 .field{
     display: flex;
@@ -33,9 +36,6 @@
     }
 }
 .myContainer{
-    width: 710rpx;
-    border-radius: 10rpx;
-    margin: 20rpx auto;
     .btnContainer{
         width: 100%;
         height: 100rpx;

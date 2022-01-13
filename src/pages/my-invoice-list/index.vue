@@ -332,7 +332,7 @@ export default {
           ApiDeleteUserReleations(getApp().globalData.loginInfo.releationId)
           .then(res=>{
               uni.clearStorageSync();//清楚缓存
-              uni.reLaunch({url:'/pages/login/index'});//关闭所有页面跳转登录页
+              uni.reLaunch({url:'/pages/excessive/index'});//关闭所有页面跳转登录页
           })
       },
       async subLoadListMore(){

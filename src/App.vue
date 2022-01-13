@@ -101,8 +101,10 @@
 	@import "components/m-icon/m-icon.css";
 
 	/*每个页面公共css */
-	.container {
+	uni-page-body{
 		height: 100%;
+	}
+	.container {
 		display: flex;
 		flex-direction: column;
 		align-items: center;

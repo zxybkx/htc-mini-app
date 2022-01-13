@@ -7,10 +7,8 @@ function wxJsApi(timestamp, noncestr, ticket) {
   }
   // url = window.location.origin + '/'
   url = window.location.href.replace(/#.*/, '')
-  console.log('url', url)
   let jsapi_ticket = ticket
   let str = `jsapi_ticket=${jsapi_ticket}&noncestr=${noncestr}&timestamp=${timestamp}&url=${url}`
-  console.log(str)
   let signature = crypto
     .createHash('sha1')
     .update(str)

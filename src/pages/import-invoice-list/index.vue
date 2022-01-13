@@ -188,17 +188,16 @@ export default{
                 VAT_INVOICEItem=Object.assign(VAT_INVOICEItem,tempInvoiceObj);
                 // console.log('///VAT_INVOICEItem',VAT_INVOICEItem);
                 // 上传档案
-                if(true||getApp().globalData.uploadRecord){
-                    let uplodRes=await ApiUploadByUrl({
-                        fileUrl:VAT_INVOICEItem.fileUrl,//当电子票时传入第三方应用返回的url
-                        invoicePoolHeaderId:tempInvoiceObj.invoicePoolHeaderId,
-                        sourceCode:'WECHAT_CARD'
-                    })
-                    if (uplodRes.failed) {
-                        return {code:0,msg:uplodRes.message,error:uplodRes}
-                    }else{
-                        return {code:1,msg:'成功'}
-                    }
+                
+                let uplodRes=await ApiUploadByUrl({
+                    fileUrl:VAT_INVOICEItem.fileUrl,//当电子票时传入第三方应用返回的url
+                    invoicePoolHeaderId:tempInvoiceObj.invoicePoolHeaderId,
+                    sourceCode:'WECHAT_CARD'
+                })
+                if (uplodRes.failed) {
+                    return {code:0,msg:uplodRes.message,error:uplodRes}
+                }else{
+                    return {code:1,msg:'成功'}
                 }
                 // return {code:1,msg:'成功'}
             } catch (error) {

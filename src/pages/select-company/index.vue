@@ -28,9 +28,9 @@
       <scroll-view class="scroll-info" scroll-x="false" scroll-y="true" scroll-with-animation="false">
           <view class="companys">
             <radio-group :value="companyCode" @change="handleSelect">
-              <label for="item.companyCode" class="C-flex radio-list" v-for="item in companys" :key="item.companyCode" >
+              <label class="C-flex radio-list" v-for="item in companys" :key="item.companyCode" >
                   <radio style="transform:scale(0.7)" :name='item.companyCode' :value="item.companyCode" :checked="item.companyCode===companyCode"></radio>
-                  <div>{{item.companyName}}</div>
+                  <view>{{item.companyName}}</view>
               </label>
             </radio-group>
           </view>
@@ -74,12 +74,12 @@ export default {
       
       const res=await ApiGetCompanys();
       
-      const test=res.content.filter(item=>{
-        return !['企业001','演示环境测试账号1'].includes(item.companyName);
-      })
-      this.companys=test;
+      // const test=res.content.filter(item=>{
+      //   return !['企业001','演示环境测试账号1'].includes(item.companyName);
+      // })
+      // this.companys=test;
 
-      // this.companys=res;
+      this.companys=res.content;
       this.company = res.content.find(
           o => o.companyCode == this.companyCode);
       const currentCompanyInfo= uni.getStorageSync('currentCompanyInfo');
