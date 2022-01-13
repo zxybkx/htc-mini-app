@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- pdf -->
+    <link rel="stylesheet" href="css/pdfh5.css" />
+    <script src="js/pdf.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/pdf.worker.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/jquery-2.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./js/eruda.min.js"></script>
+    <title>汇税通云票平台</title>
+    <style>
+        .pdf{
+            height: 260px;
+        }
+    </style>
+</head>
+<body>
+</body>
+<script>
+    let initConsole = function() {
+        let el = document.createElement('div')
+        document.body.appendChild(el)
+        eruda.init({
+            container: el,
+            tool: ['console', 'elements', 'Network', 'Info'],
+            useShadowDom: true
+        })
+    }
+    window.onload=()=>{
+        // initConsole()
+        const pdfArray =JSON.parse(localStorage.getItem('pdfArray'));
+        console.log(localStorage.getItem("pdfArray"));
+        if(pdfArray&&pdfArray.length){
+            pdfArray.forEach((item,index) => {
+                const txt=`<div id='pdf${index}' class='pdf'></div>`;
+                $('body').append(txt);
+                new Pdfh5(`#pdf${index}`, {
+                    data: atob(item)
+                });
+            });
+        }
+    }
+</script>
+</html>
