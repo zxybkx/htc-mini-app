@@ -5,7 +5,7 @@ module.exports = {
     config
       .plugin('define')
       .tap(args => {
-        args[0]['process.env'].APP_TEST = '"test"'
+        args[0]['process.env'].OS_ENV = 'OS_ENV';
         return args
       })
   }

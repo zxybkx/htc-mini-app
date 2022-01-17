@@ -24,8 +24,8 @@ import {
     ApiGetUserReleations
 } from '@/api/index';
 import {BrowserEnv} from '../../utils/browserEnv';
-
-// import { WXAPPID } from '../../utils/constant';
+import {BASE_URL} from '../../api/config';
+import { WXAPPID } from '../../utils/constant';
 const ToolGetUrlParam=(url,code)=>{
     url = new URL(url);
     let params = new URLSearchParams(url.search.slice(1));
@@ -57,6 +57,16 @@ export default{
     methods: {
         // 企业微信流程
         async subWXwork(){
+            if (!window.location.href.includes('code')){
+                const authUrl =
+                    'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
+                    WXAPPID +
+                    '&redirect_uri=' +
+                    BASE_URL +
+                    '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
+                window.location.href = authUrl;
+                return;
+            }
             // uni.redirectTo({url:`/pages/login/index`});
             // return;
             // console.log('window.location.href', window.location.href);

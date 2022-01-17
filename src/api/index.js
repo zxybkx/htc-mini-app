@@ -1,6 +1,7 @@
 import encryptPwd from '../utils/decrypt';
 import { post,get,fileUpload,effPost,effGet } from './url';
 import { SOURCE, ISV_APP_CODE } from '@/utils/constant'
+console.log('SOURCE',SOURCE,ISV_APP_CODE);
 // 获取app唯一实例
 const appInstance = getApp();
 

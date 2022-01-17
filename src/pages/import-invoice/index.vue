@@ -101,14 +101,16 @@ export default {
         async subAlipay(){
             // 支付宝
             // 获取授权authCode
+            uni.showLoading({title: '开始处理'})
             const getIsvToken = await ApiGetIsvToken();
+            uni.hideLoading();
             console.log('//this.currentCompany.taxpayerNumber',this.currentCompany.taxpayerNumber);
             my.navigateToMiniProgram({
                 appId: '77700150', // 固定值，请勿修改
                 path: `pages/select-invoice-bill/index?isv_app_code=${ISV_APP_CODE}&isv_token=${getIsvToken.isvToken}&isv_serial_no=${getIsvToken.serialNo}&isv_register_no=${this.currentCompany.taxpayerNumber}&source=einvoice&channel=reim_helper`,
                 success: (res) => {
                     console.log('成功',res)
-                    uni.hideLoading();
+                    
                     console.log(JSON.stringify(res))
                 },
                 fail: (res) => {
@@ -118,7 +120,9 @@ export default {
             });
         },
         async subWXwork(){
+            uni.showLoading({title: '开始处理'})
             let res = await ApiGetTicket()
+            uni.hideLoading();
             const corpId = res.corpId;
             const ticket = res.ticket;
             const timestamp = Date.parse(new Date()).toString();
@@ -138,7 +142,6 @@ export default {
                 if(items.length > 0){
                     const backRes = forMatting(items);
                     getApp().globalData.currentInvoiceAllInfo=backRes;
-                    uni.hideLoading();
                     uni.navigateTo({
                         url:'/pages/import-invoice-list/index'
                     })

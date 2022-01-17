@@ -49,4 +49,20 @@ switch (process.env.VUE_APP_PLATFORM) {
 export {SOURCE};
 export const ISV_APP_CODE='huishuitong_mini';
 // 可以使用环境变量替换
-export const WXAPPID = 'wx379630708e7952b7'
+let WXAPPID;
+console.log('process.env.OS_ENV',process.env.OS_ENV);
+switch (process.env.OS_ENV) {
+    case 'uat':
+        WXAPPID = 'wx379630708e7952b7'
+      break
+    case 'demo':
+        WXAPPID = 'wx47a3dfd3dfbd6cd1'
+      break
+    case 'prod':
+        WXAPPID = 'wxbe596b2f20b6ebfa'
+      break
+    default:
+        WXAPPID = 'wx379630708e7952b7'
+      break
+}
+export {WXAPPID};

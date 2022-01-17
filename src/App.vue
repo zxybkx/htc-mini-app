@@ -74,6 +74,7 @@
 		},
 		async onShow(options) {
 			console.log('App Show',options);
+			// #ifdef MP-ALIPAY
 			if(options.path&&options.path==='pages/import-invoice/index'){
 
 				uni.showLoading();
@@ -89,6 +90,7 @@
 					url: '/pages/import-invoice-list/index',
 				});
 			}
+			// #endif
 		},
 		onHide: function() {
 			console.log('App Hide');

@@ -11,7 +11,7 @@ export async function InitWxJsApi() {
     const noncestr = 'htcprojectpowerbyzsakvo';
     await jWeixin.config({
       beta: true,
-      debug: true,
+      debug: false,
       appId: corpId,
       timestamp: timestamp,
       nonceStr: noncestr,

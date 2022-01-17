@@ -73,7 +73,7 @@ export default {
           },
           error: res =>{
             console.log(res)
-            res.message&&uni.showModal({title: '错误',content: '扫码错误',showCancel: false})
+            // res.message&&uni.showModal({title: '错误',content: '扫码错误',showCancel: false})
           }
         })
       },
@@ -91,7 +91,7 @@ export default {
           },
           onFaild: res =>{
             console.log(res)
-            res.message&&uni.showModal({title: '错误',content: '扫码错误',showCancel: false})
+            // res.message&&uni.showModal({title: '错误',content: '扫码错误',showCancel: false})
           }
         })
       },
