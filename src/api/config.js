@@ -1,6 +1,6 @@
 let BASE_URL;
-console.log('OS_ENV',OS_ENV);
-switch (OS_ENV) {
+console.log('OS_ENV','OS_ENV');
+switch ('OS_ENV') {
     case 'uat':
         BASE_URL = 'https://htaxuat.htc.hand-china.com'
         break

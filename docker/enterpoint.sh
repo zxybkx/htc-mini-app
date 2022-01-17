@@ -7,3 +7,5 @@ find /usr/share/nginx/h5_html -name '*.js' | xargs sed -i "s OS_ENV $OS_ENV g"
 find /usr/share/nginx/h5_html -name '*.html' | xargs sed -i "s OS_ENV $OS_ENV g"
 
 exec "$@"
+
+

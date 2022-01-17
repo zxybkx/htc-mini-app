@@ -50,8 +50,8 @@ export {SOURCE};
 export const ISV_APP_CODE='huishuitong_mini';
 // 可以使用环境变量替换
 let WXAPPID;
-console.log('OS_ENV',OS_ENV);
-switch (OS_ENV) {
+console.log('OS_ENV','OS_ENV');
+switch ('OS_ENV') {
     case 'uat':
         WXAPPID = 'wx379630708e7952b7'
       break
