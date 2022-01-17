@@ -5,7 +5,7 @@ module.exports = {
     config
       .plugin('define')
       .tap(args => {
-        args[0]['process.env'].OS_ENV = 'OS_ENV';
+        args[0]['process.env'].OS_ENV = 'uat';
         return args
       })
   }
