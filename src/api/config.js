@@ -1,6 +1,6 @@
 let BASE_URL;
-console.log('process.env.OS_ENV',`'${process.env.OS_ENV}'`);
-switch (`'${process.env.OS_ENV}'`) {
+console.log('process.env.OS_ENV',process.env.OS_ENV);
+switch (process.env.OS_ENV) {
     case 'uat':
         BASE_URL = 'https://htaxuat.htc.hand-china.com'
         break
