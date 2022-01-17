@@ -14,7 +14,22 @@ switch ('OS_ENV') {
         BASE_URL = 'https://htaxuat.htc.hand-china.com'
         break
 }
-export {BASE_URL};
+let REDIRECT_URL;
+switch ('OS_ENV') {
+    case 'uat':
+        REDIRECT_URL = 'http://htcuatcollector.htc.hand-china.com/'
+        break;
+    case 'demo':
+        REDIRECT_URL = 'http://htcdemocollector.htc.hand-china.com/'
+        break;
+    case 'prod':
+        REDIRECT_URL = 'https://htccloudcollector.hand-china.com/'
+        break;
+    default:
+        REDIRECT_URL = 'http://htcuatcollector.htc.hand-china.com/'
+        break
+}
+export {BASE_URL,REDIRECT_URL};
 // export const BASE_URL = 'https://htccloud.hand-china.com';
 
 

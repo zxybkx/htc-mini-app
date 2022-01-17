@@ -24,7 +24,7 @@ import {
     ApiGetUserReleations
 } from '@/api/index';
 import {BrowserEnv} from '../../utils/browserEnv';
-import {BASE_URL} from '../../api/config';
+import {REDIRECT_URL} from '../../api/config';
 import { WXAPPID } from '../../utils/constant';
 const ToolGetUrlParam=(url,code)=>{
     url = new URL(url);
@@ -62,7 +62,7 @@ export default{
                     'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
                     WXAPPID +
                     '&redirect_uri=' +
-                    BASE_URL +
+                    REDIRECT_URL +
                     '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
                 window.location.href = authUrl;
                 return;
