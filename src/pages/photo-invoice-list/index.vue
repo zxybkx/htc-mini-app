@@ -120,6 +120,15 @@
                     uni.showToast({title: '提交发票为空'});
                     return;
                 }
+                if(this.invoiceInfoArray.some(item=>item.receiver&&item.receiver.length>18)){
+                    uni.showModal({
+                        title: '提示',
+                        content: '收款人超出最大长度18位',
+                        showCancel: false,
+                        confirmText: '确定',
+                    })
+                    return;
+                }
                 // 筛选出增值税发票的数据
                 const VAT_INVOICE=this.invoiceInfoArray.filter(item=>item.ocrType==='VAT_INVOICE');
                 // 筛选出非增值税发票的数据
@@ -280,6 +289,15 @@
             // 发票数据格式化
             invoiceOriginInfoArray.forEach(async (outItem,outIndex)=>{
                 // 处理定义过的发票类型
+                if(outItem.ocrType==='MACHINE_PRINTED_INVOICE'){
+                    // 机打发票
+                    outItem.ocrType='GENERAL_MACHINE_INVOICE';
+                }
+                console.log('outItem',outItem);
+                if(outItem.ocrType&&outItem.resultInfo.invoiceTypeNum==='20'){
+                    // 区块链发票
+                    outItem.ocrType='BLOCK_CHAIN';
+                }
                 try {
                     if(invoiceType.includes(outItem.ocrType)&&outItem.resultInfo){
                         // 将外部的ocrType和ocr识别的图片url拼进内部
@@ -295,6 +313,15 @@
                             // 非增值税
                             // 获取非增值税各个发票类型的税率
                             TaxRateRes=await ApiGetTaxRate(outItem.ocrType);
+                            // 做机打发票的数据统一 机打发票有两种票据
+                            if(outItem['ocrType']==='GENERAL_MACHINE_INVOICE'&&!outItem.resultInfo['code']){
+                                outItem.resultInfo['code']= outItem.resultInfo.invoiceCode;
+                                outItem.resultInfo['issueDate']=outItem.resultInfo.invoiceDate;
+                                outItem.resultInfo['total']=outItem.resultInfo.amount;
+                                outItem.resultInfo['number']=outItem.resultInfo.invoiceNumber;
+                                outItem.resultInfo['subtotalAmount']=((1000 * outItem.resultInfo.amount) / ((1 + Number(TaxRateRes.taxRate)) * 1000)).toFixed(2);
+                                outItem.resultInfo['subtotalTax']=(outItem.resultInfo.amount*(Number(TaxRateRes.taxRate))).toFixed(2);
+                            }
 
                             outItem.resultInfo.taxRate=TaxRateRes.taxRate;
                             
@@ -324,7 +351,6 @@
                             outItem.taxAmount=taxAmount;
                             outItem.invoiceAmount=outItem.totalAmount-taxAmount;
                         }
-                        
                         outItem.invoiceTypeMeaning=outItem.resultInfo.invoiceTypeMeaning||outItem.resultInfo.type;
                         tempInvoiceOriginInfoArray.push(outItem);
                         this.invoiceInfoArray=tempInvoiceOriginInfoArray;

@@ -127,7 +127,7 @@
               content: 'OCR识别信息与发票信息不一致，是否继续上传？',
               success (res) {
                 if (res.confirm) {
-                  self.agaginNoCheckUpload();
+                  self.subAgaginNoCheckUpload();
                 }
               }
             })
@@ -145,7 +145,7 @@
             // uni.showModal({title: '错误',content: '上传出错',showCancel: false})
         }
       },
-      async agaginNoCheckUpload(){
+      async subAgaginNoCheckUpload(){
         // 发票校验失败继续上传
         uni.showLoading({title: '继续上传档案'})
         await ApiFileUpload({filePath:this.filePath,invoicePoolHeaderId:this.invoiceObj.invoicePoolHeaderId,checkTag:'N'})
@@ -153,23 +153,37 @@
         uni.hideLoading();
         // uni.redirectTo({url:'/pages/invoice-collect-result/index'});
       },
+      subPdfView(){
+        // #ifdef MP-ALIPAY
+        uni.downloadFile({
+          url: this.imgUrl,
+          success: function (res) {
+            const filePath = res.tempFilePath
+            uni.openDocument({
+              filePath: filePath,
+              fileType:'pdf',
+              success: function (res) {
+                console.log('打开文档成功')
+              }
+            })
+          }
+        })
+        // #endif
+        // #ifdef H5
+        try {
+          uni.setStorageSync('H5pdfUrl', this.imgUrl);
+          uni.navigateTo({url: '/pages/pdfh5/index'});
+        } catch (e) {
+          console.log(e);
+            // error
+        }
+        // #endif
+      },
       handleViewRecord(){
         if(this.imgUrl.startsWith('data:image')){
           this.tag=true;
         }else if(this.imgUrl.indexOf('pdf')>-1){
-          uni.downloadFile({
-            url: this.imgUrl,
-            success: function (res) {
-              const filePath = res.tempFilePath
-              uni.openDocument({
-                filePath: filePath,
-                fileType:'pdf',
-                success: function (res) {
-                  console.log('打开文档成功')
-                }
-              })
-            }
-          })
+          this.subPdfView();
         }else if(this.imgUrl){
           console.log('///this.imgUrl',this.imgUrl);
           uni.previewImage({

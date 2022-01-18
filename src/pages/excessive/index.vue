@@ -57,16 +57,16 @@ export default{
     methods: {
         // 企业微信流程
         async subWXwork(){
-            if (!window.location.href.includes('code')){
-                const authUrl =
-                    'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
-                    WXAPPID +
-                    '&redirect_uri=' +
-                    REDIRECT_URL +
-                    '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
-                window.location.href = authUrl;
-                return;
-            }
+            // if (!window.location.href.includes('code')){
+            //     const authUrl =
+            //         'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
+            //         WXAPPID +
+            //         '&redirect_uri=' +
+            //         REDIRECT_URL +
+            //         '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
+            //     window.location.href = authUrl;
+            //     return;
+            // }
             // uni.redirectTo({url:`/pages/login/index`});
             // return;
             // console.log('window.location.href', window.location.href);

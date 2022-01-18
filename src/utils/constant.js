@@ -12,6 +12,7 @@ export const invoiceType=[
     'QUOTA_INVOICE',// '定额发票',
     'SPOT_TICKET',// '景区门票',
     'BLOCK_CHAIN',// '区块链发票',
+    'GENERAL_MACHINE_INVOICE'//'通用机打发票',
 ]
 // 发票来源配置字段
 
@@ -48,10 +49,11 @@ switch (process.env.VUE_APP_PLATFORM) {
 }
 export {SOURCE};
 export const ISV_APP_CODE='huishuitong_mini';
+export const ENVPARAM='OS_ENV';
 // 可以使用环境变量替换
 let WXAPPID;
-console.log('OS_ENV','OS_ENV');
-switch ('OS_ENV') {
+console.log('OS_ENV',ENVPARAM);
+switch (ENVPARAM) {
     case 'uat':
         WXAPPID = 'wx379630708e7952b7'
       break

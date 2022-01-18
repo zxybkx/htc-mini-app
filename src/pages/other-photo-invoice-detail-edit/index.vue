@@ -68,8 +68,8 @@
                     </div>
                     <!-- 普通input -->
                     <div class="right" v-if="item.type==='string'||item.type==='digit'">
-                        <input :type="item.type" data-name="item.name" placeholder="请输入" v-model="currentInvoiceInfo[item.name]" 
-                            >
+                        <uni-easyinput :type="item.type" :data-name="item.name" placeholder="请输入" v-model="currentInvoiceInfo[item.name]">
+                        </uni-easyinput>
                     </div>
                     <!-- 日期/时间选择 -->
                     <div class="right" v-else>
@@ -119,6 +119,15 @@ export default{
                 
             if(judgeRes){
                 uni.showToast({title: '必填项不为空',icon: 'none',duration: 2000})
+                return;
+            }
+            if(this.currentInvoiceInfo.receiver&&this.currentInvoiceInfo.receiver.length>18){
+                uni.showModal({
+                    title: '提示',
+                    content: '收款人超出最大长度18位',
+                    showCancel: false,
+                    confirmText: '确定',
+                })
                 return;
             }
             // 将ocr识别的字段编辑后赋值全局变量globalData.currentInvoiceInfo

@@ -44,6 +44,7 @@ export default {
                 // 通过小程序的上传接口返回的数据是个json字符串需要解析
                 uploadResult=JSON.parse(uploadResult);
                 // console.log('uploadResult',uploadResult);
+                
                 if(uploadResult.status==='H0001'){
                     // 返回结果是个数组 可以拍一张或多张
                     getApp().globalData.currentInvoiceAllInfo=uploadResult.data;

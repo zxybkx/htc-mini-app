@@ -11,6 +11,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
+      z-index: 999;
     }
   }
   .bottom-wrapper {
@@ -40,9 +42,9 @@
 </style>
 <template>
     <div class="inv-detail">
-        <commonInvoice-ui>
+        <commonInvoice-Ui>
           <div slot="edit" class="edit" @click="handleEdit" v-if="type==1">编辑</div>
-        </commonInvoice-ui>
+        </commonInvoice-Ui>
         <view class="bottom-wrapper bottom-wrapper-one">
           <button class="subBtn" type="primary" @click="handlePreview">查看档案</button>
         </view>
@@ -51,7 +53,7 @@
 <script>
 
 import {ApigetSignedUrl,ApiOfdUrlToJpg} from '@/api/index';
-import { commonInvoiceUi } from '../../components/commonInvoiceUi.vue'
+import  commonInvoiceUi from '../../components/commonInvoiceUi.vue'
 export default {
     data(){
         return {

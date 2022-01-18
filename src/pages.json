@@ -72,9 +72,14 @@
 				"navigationBarTitleText": "本次发票采集汇总"
 			}
 		},{
+			"path": "pages/pdfh5/index",
+			"style": {
+				"navigationBarTitleText": "PDF预览"
+			}
+		},{
 			"path": "pages/view-record/index",
 			"style": {
-				"navigationBarTitleText": "发票详情"
+				"navigationBarTitleText": "发票预览"
 			}
 		},{
 			"path": "pages/photo-invoice-list/index",
@@ -99,12 +104,12 @@
 		},{
 			"path": "pages/other-photo-invoice-detail-edit/index",
 			"style": {
-				"navigationBarTitleText": "拍发票详情"
+				"navigationBarTitleText": "拍发票编辑"
 			}
 		},{
 			"path": "pages/photo-invoice-result/index",
 			"style": {
-				"navigationBarTitleText": "拍发票详情"
+				"navigationBarTitleText": "拍发票识别结果"
 			}
 		}
 	],
