@@ -1,39 +1,48 @@
 <style>
-	@import "pdfh5/css/pdfh5.css";
-	#app {
+	.app {
         width: 100%;
-        height: 100%;
-    }
+  }
 </style>
 <template>
-  <div id="app">
-    <pdf :src="pdfSrc" ref="pdf" />
+  <div class="app">
+    <pdf :src="pdfSrc" ref="pdf" @loaded="docLoaded"/>
   </div>
 </template>
 <script>
+import {BASE_URL} from '../../api/config'
 import pdf from 'vue-pdf-signature'
 import CMapReaderFactory from 'vue-pdf-signature/src/CMapReaderFactory.js'
   export default {
-	data() {
-	  return {
-	    pdfSrc: null
-	  };
-	},
-    onLoad(){
+    data() {
+      return {
+        pdfSrc: null
+      };
+    },
+    components: {
+      pdf
+    },
+    methods:{
+      docLoaded(){
+        uni.hideLoading();
+      }
+    },
+    onLoad(options){
         try {
             uni.showLoading()
-            const query = uni.createSelectorQuery().in(this);
-            const value = uni.getStorageSync('H5pdfUrl');
+            const value = options.url;
             if (value) {
+                let bucketName=value.includes('hocr')?'hocr':'hivp'
                 this.pdfSrc = pdf.createLoadingTask({
-                    url: value,
+                    url: `${BASE_URL}/hcan/v1/0/file-download/by-url?bucketName=${bucketName}&fileUrl=${value}`,
+                    httpHeaders: {
+                      Authorization: uni.getStorageSync('token')
+                    },
                     CMapReaderFactory,
                     //引入 pdf.js 字体，templ
                     cMapUrl: '../../static/cmaps',
-                    cMapPacked: true
+                    cMapPacked: true,
                 })
             }
-            uni.hideLoading();
         } catch (e) {
             console.log(e);
             // error

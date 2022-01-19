@@ -171,8 +171,7 @@
         // #endif
         // #ifdef H5
         try {
-          uni.setStorageSync('H5pdfUrl', this.imgUrl);
-          uni.navigateTo({url: '/pages/pdfh5/index'});
+          uni.navigateTo({url: `/pages/pdfh5/index?url=${this.invoiceObj['fileUrl']}`});
         } catch (e) {
           console.log(e);
             // error
