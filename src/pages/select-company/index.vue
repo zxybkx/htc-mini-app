@@ -53,7 +53,9 @@
 
 <script>
 import {ApiGetCompanys,ApiGetDowntimeNotice} from '@/api';
+// #ifdef H5
 import { InitWxJsApi } from '../../utils/wxsdk';
+// #endif
 export default {
   data() {
     return {
@@ -112,9 +114,10 @@ export default {
         getApp().globalData.tipInvoiceUser='';//是否提示发票持有人信息,
         getApp().globalData.currentCompanyInfo = this.company
         uni.setStorageSync('currentCompanyInfo',this.company);
+        // #ifdef H5
         // 当企业微信选择企业 进行SDK授权 
         InitWxJsApi();
-        
+        // #endif
         uni.reLaunch({
           url: '/pages/index/index',
         });
@@ -169,11 +172,15 @@ export default {
     background :#1989fa;
   }
 }
+uni-page{
+		background: red;
+}
 .container{ 
   /* padding: 16px; */
   padding: 24rpx;
   padding-bottom: 100rpx;
   width: 100%;
+  background: #fff;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

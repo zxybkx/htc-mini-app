@@ -5,22 +5,28 @@
 </style>
 <template>
   <div class="app">
+    <!-- #ifdef H5 -->
     <pdf :src="pdfSrc" ref="pdf" @loaded="docLoaded"/>
+    <!--  #endif -->
   </div>
 </template>
 <script>
 import {BASE_URL} from '../../api/config'
+// #ifdef H5
 import pdf from 'vue-pdf-signature'
 import CMapReaderFactory from 'vue-pdf-signature/src/CMapReaderFactory.js'
+// #endif
   export default {
     data() {
       return {
         pdfSrc: null
       };
     },
+    // #ifdef H5
     components: {
       pdf
     },
+    // #endif
     methods:{
       docLoaded(){
         uni.hideLoading();

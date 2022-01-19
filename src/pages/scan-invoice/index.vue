@@ -1,7 +1,4 @@
 <style lang="scss">
-page{
-    background:#F6F6F6;
-}
 .container{
     padding: 0rpx 20rpx;
 }
@@ -24,9 +21,11 @@ import {formatCheckObj,formatExistInvObj} from '@/utils/formatInvObj';
 //扫发票二维码对应字段
 const invObjKeys = ['version','invoiceType','invoiceCode','invoiceNumber',
     'invoiceAmount','invoiceDate','checkCode','crc'];
+// #ifdef H5
 const jWeixin = require('weixin-js-sdk');
 import {BrowserEnv} from '../../utils/browserEnv';
 const browserEnv=BrowserEnv();
+// #endif
 export default {
     data(){
         return{
@@ -56,6 +55,7 @@ export default {
         }
         // #endif
       },
+      // #ifdef H5
       async subWXwork(){
         console.log(jWeixin);
         const self=this;
@@ -95,6 +95,7 @@ export default {
           }
         })
       },
+      // #endif
       async subAlipay(){
         try {
           const [error,scanRes]=await uni.scanCode({onlyFromCamera: true,scanType:['qrCode']});

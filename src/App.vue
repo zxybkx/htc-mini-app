@@ -103,6 +103,9 @@
 	@import "components/m-icon/m-icon.css";
 
 	/*每个页面公共css */
+	uni-page{
+		background: #f8fafa;
+	}
 	uni-page-body{
 		height: 100%;
 	}

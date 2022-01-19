@@ -1,7 +1,4 @@
 <style lang="scss">
-page{
-    background:#F6F6F6;
-}
 .container{
     padding: 0rpx 20rpx;
 }

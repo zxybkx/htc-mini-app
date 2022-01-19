@@ -1,5 +1,6 @@
 <style lang="scss">
 .invoiceUi{
+    margin-bottom: 20px;
     .common-label{
       font-size: 28rpx;
       font-weight: 400;

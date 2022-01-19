@@ -1,6 +1,6 @@
 <style lang="scss">
 page{
-    background-color: #F6F6F6;
+    background-color:#f9f9f9;
     padding-bottom: 120rpx;
 }
 .myInvoiceList{
