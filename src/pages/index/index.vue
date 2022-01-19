@@ -170,20 +170,18 @@ export default {
                 uni.navigateTo({url:'/pages/photo-invoice/index'})
                 break;
             case 2:
-                uni.navigateTo({url:'/pages/import-invoice/index?encryptedUid=${options.query.encryptedUid}&packageId=${options.query.packageId}'})
+                uni.navigateTo({url:'/pages/import-invoice/index'})
                 break;
             case 3:
                 uni.navigateTo({url:'/pages/import-ofd/index'})
                 break;
             default:
-                console.log('我的发票')
                 uni.navigateTo({url:'/pages/my-invoice-list/index'})
         }
       }
     },
     
     onLoad(options){
-      // console.log();
       // 换取缓存的currentConmpanyInfo对象
       const currentCompanyInfo = uni.getStorageSync('currentCompanyInfo');
       if(currentCompanyInfo){

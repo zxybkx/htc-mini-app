@@ -1,39 +1,12 @@
 <style lang="scss">
-    .page{
-        background-color: #F6F6F6;
-        padding-bottom: 120rpx;
-    }
-    .box{
+    .container{
         padding: 0rpx 20rpx;
-    }
-    .delBtn{
-        height: 100%;
-        width: 60px;
-        background-color: #FA5051;
-    }
-    .btnContainer{
-        width: 100%;
-        height: 100rpx;
-        background: #FFFFFF;
-        position: fixed;
-        left:0;
-        bottom: 0;
-        .btn{
-            width: 700rpx;
-            height: 72rpx;
-            background: #0282F0;
-            border-radius: 8rpx;
-            font-size: 32rpx;
-            font-weight: 400;
-            color: #FFFFFF;
-        }
     }
 </style>
 <template>
-<div class="page">
-    <view class="box">
+    <view class="container">
         <user-card :currentCompany="currentCompany"></user-card>
-        <div v-for="(item, index) in invoiceInfoArray" :key="index" @click="handleDetail(index)">
+        <div v-for="(item, index) in invoiceInfoArray" style="width:100%;" :key="index" @click="handleDetail(index)">
             <invoice-card :info="item" :index="index" :uiTag=true >
                 <div slot="title">{{item.invoiceTypeMeaning||item.invoiceType}}</div>
                 <div slot="desc">详情:   已添加至我的发票</div>
@@ -41,8 +14,6 @@
         </div>
         <div v-if="invoiceInfoArray.length===0">采集结果为空</div>
     </view>
-</div>
-    
 </template>
 <script>
     import { invoiceType } from '@/utils/constant';

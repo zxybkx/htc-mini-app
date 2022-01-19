@@ -234,7 +234,7 @@ export const ApigetSignedUrl = url=>
     get(`/hfle/v1/${getCompanyInfo().tenantId}/files/signedUrl`,{
         bucketName: url.includes('hocr')?'hocr':'hivp',
         url,
-    })
+    },{},{dataType:'text'})
 /**
  * 小程序发票OCR识别
  * 

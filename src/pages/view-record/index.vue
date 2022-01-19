@@ -1,14 +1,13 @@
 <style lang="scss">
   .inv-detail{
-    margin-bottom: 120rpx;
-    background: #f2f2f2;
+    padding-bottom: 110rpx;
     height: 100%;
     overflow-y: auto;
   }
   .bottom-wrapper {
     width: 100%;
-    height: 100rpx;
-    background-color: #ffffff;
+    height: 110rpx;
+    background-color: #fff;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -184,7 +183,6 @@
         }else if(this.imgUrl.indexOf('pdf')>-1){
           this.subPdfView();
         }else if(this.imgUrl){
-          console.log('///this.imgUrl',this.imgUrl);
           uni.previewImage({
             urls: [this.imgUrl], // 当前显示图片的http链接
           })
@@ -204,11 +202,13 @@
       try {
         uni.showLoading();
         const invoiceObj=getApp().globalData.currentInvoiceInfo;
-        
-        const refreshInvoiceInfo=await ApiIsInvExist({
-          invoiceCode: invoiceObj.invoiceCode,
-          invoiceNumber: invoiceObj.invoiceNumber||invoiceObj.invoiceNo
-        });
+        let refreshInvoiceInfo={};
+        if(invoiceObj.invoiceCode){
+          refreshInvoiceInfo=await ApiIsInvExist({
+            invoiceCode: invoiceObj.invoiceCode,
+            invoiceNumber: invoiceObj.invoiceNumber||invoiceObj.invoiceNo
+          });
+        }
         this.invoiceObj={
           ...getApp().globalData.currentInvoiceInfo,
           ...refreshInvoiceInfo.content[0]

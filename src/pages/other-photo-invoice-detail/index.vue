@@ -1,9 +1,8 @@
 <style lang="scss">
   .inv-detail{
     height: 100%;
-    background: #f2f2f2;
     overflow-y: auto;
-    margin-bottom: 140rpx;
+    padding-bottom: 110rpx;
     .edit{
       background: #0282F0;
       width: 112rpx;
@@ -17,8 +16,8 @@
   }
   .bottom-wrapper {
     width: 100%;
-    height: 100rpx;
-    background-color: #ffffff;
+    height: 110rpx;
+    background-color:#fff;
     position: fixed;
     bottom: 0;
     left: 0;

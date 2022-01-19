@@ -23,18 +23,20 @@ import {
     ApiWXworkLogin,
     ApiGetUserReleations
 } from '@/api/index';
+// #ifdef H5
 import {BrowserEnv} from '../../utils/browserEnv';
 import {REDIRECT_URL} from '../../api/config';
 import { WXAPPID } from '../../utils/constant';
+const browserEnv=BrowserEnv();
+
 const ToolGetUrlParam=(url,code)=>{
     url = new URL(url);
     let params = new URLSearchParams(url.search.slice(1));
     return params.getAll(code)[0]
 };
-const browserEnv=BrowserEnv();
+// #endif
 export default{
     async created(){
-        console.log('href', window.location.href);
         // excessive
         uni.showLoading({title:'正在进入汇税通'});
         // #ifdef MP-ALIPAY
@@ -55,6 +57,7 @@ export default{
         // #endif
     },
     methods: {
+        // #ifdef H5
         // 企业微信流程
         async subWXwork(){
             if (!window.location.href.includes('code')){
@@ -169,6 +172,7 @@ export default{
                 uni.navigateTo({ url: '/pages/login/index' })
             }
         },
+        // #endif
         // 支付宝流程
         subAlipay(){
             my.getAuthCode({scopes: 'auth_base'})

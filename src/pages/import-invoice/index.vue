@@ -1,7 +1,4 @@
 <style lang="scss">
-page{
-    background:#F6F6F6;
-}
 .container{
     padding: 0rpx 20rpx;
 }
@@ -21,11 +18,13 @@ import {ApiIsInvExist,ApiCheckInv,ApiGetEmployeeClearTips,ApiGetIsvToken,ApiGetT
 import userCard from '@/common/userCard.vue';
 import navSectionUi from '@/components/navSectionUi.vue';
 import { ISV_APP_CODE } from '@/utils/constant';
+// #ifdef H5
 import {BrowserEnv} from '../../utils/browserEnv';
 import '@/static/cloud.js';
 import genSign from '@/utils/genSign';
 const jWeixin = require('weixin-js-sdk');
 const browserEnv=BrowserEnv();
+// #endif
 const formatTime= time => {
     time *= time.toString().length < 13 ? 1000 : 1;
     var date = new Date(time + 8 * 3600 * 1000);
@@ -119,6 +118,7 @@ export default {
                 }
             });
         },
+        // #ifdef H5
         async subWXwork(){
             uni.showLoading({title: '开始处理'})
             let res = await ApiGetTicket()
@@ -177,6 +177,7 @@ export default {
                 location.href = res.result.openlink;
             }
         }
+        // #endif
     },
     onLoad(options){
       const tempCurrentCompany=getApp().globalData.currentCompanyInfo;

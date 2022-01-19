@@ -1,8 +1,7 @@
 <style lang="scss">
     .box{
         padding: 0rpx 20rpx;
-        background-color: #F6F6F6;
-        padding-bottom: 120rpx;
+        padding-bottom: 110rpx;
         overflow-y: auto;
         height: 100%;
     }
@@ -13,7 +12,7 @@
     }
     .btnContainer{
         width: 100%;
-        height: 100rpx;
+        height: 110rpx;
         background: #FFFFFF;
         position: fixed;
         left:0;
@@ -293,7 +292,6 @@
                     // 机打发票
                     outItem.ocrType='GENERAL_MACHINE_INVOICE';
                 }
-                console.log('outItem',outItem);
                 if(outItem.ocrType&&outItem.resultInfo.invoiceTypeNum==='20'){
                     // 区块链发票
                     outItem.ocrType='BLOCK_CHAIN';

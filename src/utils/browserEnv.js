@@ -5,9 +5,9 @@
  */
 export const BrowserEnv=()=>{
     let ua = navigator.userAgent;
-    if(ua.includes('wxwork')){
+    if(ua&&ua.includes('wxwork')){
         return 1
-    }else if(ua.includes('DingTalk')){
+    }else if(ua&&ua.includes('DingTalk')){
         return 2
     }else{
         // 其他情况
