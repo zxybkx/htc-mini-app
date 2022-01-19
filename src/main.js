@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 
 import store from './store'
-
+import {ENVPARAM} from './utils/constant'
 Vue.config.productionTip = false
 
 Vue.prototype.$store = store
@@ -24,14 +24,11 @@ let initConsole = function() {
     useShadowDom: true
   })
 }
-switch (process.env.NODE_ENV) {
-  case 'development':
+switch (ENVPARAM) {
+  case 'uat':
     initConsole();
-    break
-  case 'production':
     break
   default:
-    initConsole();
     break
 }
 // #endif

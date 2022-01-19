@@ -521,7 +521,206 @@ export const eachChildInfos={
         },
     ],
     SPOT_TICKET: [],
-    BLOCK_CHAIN: [],
+    [invoiceType[8]]: [
+        {
+            name: 'number',
+            dbName: 'invoiceNo',
+            label: '发票号码',
+            type: 'string',
+            required: true,
+        },{
+            name: 'code',
+            dbName: 'invoiceCode',
+            label: '发票代码',
+            type: 'string',
+            required: true,
+        },{
+            name: 'issueDate',
+            dbName: 'invoiceDate',
+            label: '开票日期',
+            type: 'string',
+            required: true,
+        },{
+            name: 'checkCode',
+            dbName: 'checkCode',
+            label: '校验码',
+            type: 'string',
+        },{
+            name: 'buyerName',
+            dbName: 'buyerName',
+            label: '购买方名称',
+            type: 'string',
+            required: true,
+        },{
+            name: 'buyerId',
+            dbName: 'buyerTaxNo',
+            label: '购方纳税人识别号',
+            type: 'string',
+        },{
+            name: 'buyerAddress',
+            dbName: 'buyerAddressPhone',
+            label: '购方地址电话',
+            type: 'string',
+        },{
+            name: 'buyerBank',
+            dbName: 'buyerAccount',
+            label: '购方银行账号',
+            type: 'string',
+        },{
+            name: 'sellerName',
+            dbName: 'salerName',
+            label: '销方名称',
+            type: 'string',
+            required: true,
+        },{
+            name: 'sellerId',
+            dbName: 'salerTaxNo',
+            label: '销方纳税人识别号',
+            type: 'string',
+        },{
+            name: 'sellerAddress',
+            dbName: 'salerAddressPhone',
+            label: '销方地址电话',
+            type: 'string',
+        },{
+            name: 'sellerBank',
+            dbName: 'salerAccount',
+            label: '销方银行账号',
+            type: 'string',
+        },{
+            name: 'subtotalAmount',
+            dbName: 'invoiceAmount',
+            label: '发票金额',
+            type: 'digit',
+            required: true,
+        },{
+            name: 'subtotalTax',
+            dbName: 'taxAmount',
+            label: '发票税额',
+            type: 'digit',
+            required: true,
+        },{
+            name: 'total',
+            dbName: 'totalAmount',
+            label: '价税合计',
+            type: 'digit',
+            required: true,
+        },{
+            name: 'receiver',
+            dbName: 'payee',
+            label: '收款人',
+            type: 'string',
+        },{
+            name: 'reviewer',
+            dbName: 'reviewer',
+            label: '复核人',
+            type: 'string',
+        },{
+            name: 'issuer',
+            dbName: 'drawer',
+            label: '开票人',
+            type: 'string',
+        },
+    ],
+    [invoiceType[9]]:[
+        {
+            name: 'number',
+            dbName: 'invoiceNo',
+            label: '发票号码',
+            type: 'string',
+            required: true,
+        },{
+            name: 'code',
+            dbName: 'invoiceCode',
+            label: '发票代码',
+            type: 'string',
+            required: true,
+        },{
+            name: 'issueDate',
+            dbName: 'invoiceDate',
+            label: '开票日期',
+            type: 'string',
+            required: true,
+        },{
+            name: 'checkCode',
+            dbName: 'checkCode',
+            label: '校验码',
+            type: 'string',
+        },{
+            name: 'buyerName',
+            dbName: 'buyerName',
+            label: '购买方名称',
+            type: 'string',
+        },{
+            name: 'buyerId',
+            dbName: 'buyerTaxNo',
+            label: '购方纳税人识别号',
+            type: 'string',
+        },{
+            name: 'buyerAddress',
+            dbName: 'buyerAddressPhone',
+            label: '购方地址电话',
+            type: 'string',
+        },{
+            name: 'buyerBank',
+            dbName: 'buyerAccount',
+            label: '购方银行账号',
+            type: 'string',
+        },{
+            name: 'sellerName',
+            dbName: 'salerName',
+            label: '销方名称',
+            type: 'string',
+        },{
+            name: 'sellerId',
+            dbName: 'salerTaxNo',
+            label: '销方纳税人识别号',
+            type: 'string',
+        },{
+            name: 'sellerAddress',
+            dbName: 'salerAddressPhone',
+            label: '销方地址电话',
+            type: 'string',
+        },{
+            name: 'sellerBank',
+            dbName: 'salerAccount',
+            label: '销方银行账号',
+            type: 'string',
+        },{
+            name: 'subtotalAmount',
+            dbName: 'invoiceAmount',
+            label: '发票金额',
+            type: 'digit',
+            required: true,
+        },{
+            name: 'subtotalTax',
+            dbName: 'taxAmount',
+            label: '发票税额',
+            type: 'digit',
+            required: true,
+        },{
+            name: 'total',
+            dbName: 'totalAmount',
+            label: '价税合计',
+            type: 'digit',
+            required: true,
+        },{
+            name: 'receiver',
+            dbName: 'payee',
+            label: '收款人',
+            type: 'string',
+        },{
+            name: 'reviewer',
+            dbName: 'reviewer',
+            label: '复核人',
+            type: 'string',
+        },{
+            name: 'issuer',
+            dbName: 'drawer',
+            label: '开票人',
+            type: 'string',
+        }, 
+    ]
 }
 export const FormatData={
     [invoiceType[0]](item){
@@ -584,5 +783,11 @@ export const FormatData={
     },
     [invoiceType[6]](outItem){
         outItem.invoiceTypeMeaning='定额发票';
+    },
+    [invoiceType[8]](outItem){
+        outItem.invoiceTypeMeaning='区块链发票';
+    },
+    [invoiceType[9]](outItem){
+        outItem.invoiceTypeMeaning='通用机打发票';
     },
 }

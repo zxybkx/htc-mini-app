@@ -67,9 +67,6 @@ export default{
                 window.location.href = authUrl;
                 return;
             }
-            // uni.redirectTo({url:`/pages/login/index`});
-            // return;
-            // console.log('window.location.href', window.location.href);
             let code = ToolGetUrlParam(window.location.href, 'code');
             if (code) {
                 const userInfo=await ApiWXworkLogin(code);

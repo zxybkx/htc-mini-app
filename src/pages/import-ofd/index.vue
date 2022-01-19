@@ -36,7 +36,6 @@ export default {
           try {
             let [error,chooseRes]=await uni.chooseFile({
               count:1,
-              type:'file',
               extension:['ofd','pdf']
             })
             if(error)throw error;

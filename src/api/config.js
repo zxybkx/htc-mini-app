@@ -1,6 +1,7 @@
+import {ENVPARAM} from '../utils/constant'
 let BASE_URL;
-console.log('OS_ENV','OS_ENV');
-switch ('OS_ENV') {
+console.log('OS_ENV',ENVPARAM);
+switch (ENVPARAM) {
     case 'uat':
         BASE_URL = 'https://htaxuat.htc.hand-china.com'
         break
@@ -15,7 +16,7 @@ switch ('OS_ENV') {
         break
 }
 let REDIRECT_URL;
-switch ('OS_ENV') {
+switch (ENVPARAM) {
     case 'uat':
         REDIRECT_URL = 'http://htcuatcollector.htc.hand-china.com/'
         break;

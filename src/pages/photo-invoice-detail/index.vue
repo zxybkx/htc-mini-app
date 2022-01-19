@@ -106,9 +106,18 @@ export default{
     },
     methods:{
       handlePreview(){
-        uni.previewImage({
-          urls: [this.invoiceObj.imageUrl], // 当前显示图片的http链接
-        })
+        if(this.invoiceObj.imageUrl.includes('.pdf')){
+          try {
+            uni.navigateTo({url: `/pages/pdfh5/index?url=${this.invoiceObj.imageUrl}`});
+          } catch (e) {
+            console.log(e);
+              // error
+          }
+        }else{
+          uni.previewImage({
+            urls: [this.invoiceObj.imageUrl], // 当前显示图片的http链接
+          })
+        }
       },
       handleEdit(){
         uni.redirectTo({
@@ -121,7 +130,7 @@ export default{
     },
     created(){
       const tempInfo=getApp().globalData.currentInvoiceInfo;
-      tempInfo.invoiceLinesInfoList.forEach(item=>{item.unitPrice=item.unitPrice.toFixed(2)})
+      tempInfo.invoiceLinesInfoList.forEach(item=>{item.unitPrice=Number(item.unitPrice).toFixed(2)})
 
       this.invoiceObj=tempInfo;
       this.invoiceLinesInfoList=tempInfo.invoiceLinesInfoList||[];

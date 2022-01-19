@@ -227,17 +227,13 @@ export const ApiFileUpload = data => fileUpload(`/hivp/v1/${getCompanyInfo().ten
 
 /**
  * 
- * 将上传档案获取的url转化为可以预览的url(不清楚这个操作的意义)
+ * 将上传档案获取的url转化为可以预览的url
  */
 
 export const ApigetSignedUrl = url=> 
-    get('/hfle/v1/7/files/signedUrl',{
-        
-        bucketName: 'hivp',
+    get(`/hfle/v1/${getCompanyInfo().tenantId}/files/signedUrl`,{
+        bucketName: url.includes('hocr')?'hocr':'hivp',
         url,
-    },{},{
-        sslVerify: false,
-        dataType:'text'
     })
 /**
  * 小程序发票OCR识别

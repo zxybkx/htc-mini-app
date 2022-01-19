@@ -245,10 +245,12 @@ export default {
           }
           if(this.list[index].sourceCode=== 'INVOICE_POOL'){
               // 增值税情况==>请求一下接口获取增值税的全部信息列表的信息不全
+              uni.showLoading()
               const refreshInvoiceInfo=await ApiIsInvExist({
                   invoiceCode: this.list[index].invoiceCode,
                   invoiceNumber: this.list[index].invoiceNumber
               });
+              uni.hideLoading();
               getApp().globalData.currentInvoiceInfo=refreshInvoiceInfo.content[0];
               uni.navigateTo({
                   url:'/pages/view-record/index'
