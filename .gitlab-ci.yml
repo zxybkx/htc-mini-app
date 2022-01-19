@@ -89,7 +89,6 @@ docker_build:
         yarn install
         echo "==: 结束安装依赖"
       fi
-      npx hzero-cli info
   }
 
   function node_build(){
