@@ -45,10 +45,12 @@ docker_build:
 
 
   function node_build(){
-  echo "==: 开始安装依赖"
-        node -v
-        yarn config set ignore-engines true
-        yarn install
+      echo "删除dist"
+      rm -rf ./dist
+      echo "==: 开始安装依赖"
+      node -v
+      yarn config set ignore-engines true
+      yarn install
       echo "编译小程序"
       npm run build
   }
