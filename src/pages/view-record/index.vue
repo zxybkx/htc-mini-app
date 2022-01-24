@@ -46,12 +46,15 @@
 <template>
     <view class="inv-detail">
         <invoice-Ui :initInvoice="invoiceObj"></invoice-Ui>
-        <view class="bottom-wrapper bottom-wrapper-one" v-if='imgUrl'>
-            <button class="button" @click="handleViewRecord">查看档案</button>
+        <view v-if='!wxUrl'>
+          <view class="bottom-wrapper bottom-wrapper-one" v-if='imgUrl'>
+              <button class="button" @click="handleViewRecord">查看档案</button>
+          </view>
+          <view class="bottom-wrapper bottom-wrapper-one" v-else>
+              <button class="button" @click="handleUploadRecord">上传档案</button>
+          </view>
         </view>
-        <view class="bottom-wrapper bottom-wrapper-one" v-else>
-            <button class="button" @click="handleUploadRecord">上传档案</button>
-        </view>
+        
         <div class="C-flex modal" v-if='tag' @click="handleHide">
             <div class="wrapper">
                 <image :src="imgUrl" @load="imageLoad"  mode="aspectFit"></image>
@@ -65,6 +68,7 @@
   export default{
     data() {
         return {
+            wxUrl:false,
             invoiceObj:{},
             imgUrl:'',
             tag:false,
@@ -181,6 +185,7 @@
         if(this.imgUrl.startsWith('data:image')){
           this.tag=true;
         }else if(this.imgUrl.indexOf('pdf')>-1){
+
           this.subPdfView();
         }else if(this.imgUrl){
           uni.previewImage({
@@ -226,6 +231,7 @@
           this.imgUrl=`data:image/jpg;base64,${res.data}`;
         }else if(fileUrl.indexOf('https://mp.weixin.qq.com/')>-1||fileUrl.indexOf('https://mdn.alipayobjects.com')>-1){
           // 此时是导入电子票从微信或者支付宝获取的文件url
+          if(fileUrl.indexOf('https://mp.weixin.qq.com/')>-1){this.wxUrl=true}
           this.imgUrl=this.invoiceObj['imageUrl'];
         }else{
           // 转化 url
