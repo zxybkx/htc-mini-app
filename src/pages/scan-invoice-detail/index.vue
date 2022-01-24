@@ -135,12 +135,12 @@
             if (tag.confirm) {
               [error,chooseResult]=await uni.chooseImage({
                 count: 1,
-                sizeType: ['compressed'],
+                sourceType:['camera'],
               })
               if(error) throw error;
               this.filePath=chooseResult.tempFilePaths[0];
             } else if (tag.cancel) {
-              [error,chooseResult]=await uni.chooseMessageFile({
+              [error,chooseResult]=await uni.chooseFile({
                 count:1,
                 type:'file',
                 extension:['pdf']
@@ -273,7 +273,7 @@
     },
     onLoad(){
       const tempInfo=getApp().globalData.currentInvoiceInfo;
-      tempInfo.invoiceLinesInfoList.forEach(item=>{item.unitPrice=item.unitPrice.toFixed(2)})
+      tempInfo.invoiceLinesInfoList.forEach(item=>{item.unitPrice=Number(item.unitPrice).toFixed(2)})
       this.invoiceObj=tempInfo;
       this.invoiceLinesInfoList=tempInfo.invoiceLinesInfoList||[];
 

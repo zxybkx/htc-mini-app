@@ -64,7 +64,7 @@
     <view class="inv-detail">
       <invoice-ui>
         <div slot="edit" class="edit" @click="handleEdit" v-if="type==1">编辑</div>
-        <view slot="goods" v-if="invoiceLinesInfoList.length>0">
+        <!-- <view slot="goods" v-if="invoiceLinesInfoList.length>0">
           <div class="C-flex divider">商品信息</div>
           <div class="table">
               <div class="tb-title">
@@ -84,7 +84,7 @@
                 <div class="p1" style="width:106rpx;">{{item.taxRate}}</div>
               </div>
           </div>
-        </view>
+        </view> -->
       </invoice-ui>
       <view class="bottom-wrapper bottom-wrapper-one">
           <button class="subBtn" type="primary" @click="handlePreview">查看档案</button>

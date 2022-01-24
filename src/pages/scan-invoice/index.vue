@@ -72,7 +72,7 @@ export default {
             self.subDispose(invObj);
           },
           error: res =>{
-            console.log(res)
+            console.log('扫码错误',res)
             // res.message&&uni.showModal({title: '错误',content: '扫码错误',showCancel: false})
           }
         })
