@@ -130,7 +130,8 @@ export default{
     },
     created(){
       const tempInfo=getApp().globalData.currentInvoiceInfo;
-      tempInfo.invoiceLinesInfoList.forEach(item=>{item.unitPrice=Number(item.unitPrice).toFixed(2)})
+      console.log('tempInfo.invoiceLinesInfoList',tempInfo.invoiceLinesInfoList);
+      tempInfo.invoiceLinesInfoList&&tempInfo.invoiceLinesInfoList.forEach(item=>{item.unitPrice&&(item.unitPrice=Number(item.unitPrice).toFixed(2))})
 
       this.invoiceObj=tempInfo;
       this.invoiceLinesInfoList=tempInfo.invoiceLinesInfoList||[];
