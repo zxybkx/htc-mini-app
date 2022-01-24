@@ -13,6 +13,10 @@
             rel="stylesheet"
             href="./css/index.css"
         />
+        <link
+            rel="stylesheet"
+            href="./css/success.css"
+        />
         <!-- 引入 Vue 和 Vant 的 JS 文件 -->
         <script src="./js/vue.min.js"></script>
         <script src="./js/vant.min.js"></script>
@@ -136,8 +140,10 @@
                 <p class='finishStatus'>请使用微信扫描打开</p>
             </div>
             <div v-else>
-                <div>
-                    <div v-if="requestStatus==='C'">
+                <div v-if="requestStatus!=='C'">
+                    <div>
+                        
+                    </div>
                     <p class='finishStatus' v-if='invoiceTypeObj.value!=="51"&&invoiceTypeObj.value!=="52"'>您已提交开票申请，请等待发票开具。</p>
                     <p class='finishStatus' v-else>您已提交开票申请，请等待邮箱或短信推送。</p>
                 </div>
@@ -487,7 +493,7 @@
             },
             created(){
                 // initConsole()
-                this.uaType=uaFn();
+                this.uaType=!uaFn();
                 if(!this.uaType)return;
                 vant.Toast.loading({
                     duration:0,
@@ -592,5 +598,5 @@
                 // });
             }
         });
-      </script>
+    </script>
 </html>

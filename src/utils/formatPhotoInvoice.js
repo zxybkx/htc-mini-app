@@ -171,7 +171,6 @@ export const eachChildInfos={
             dbName: 'invoiceDate',
             label: '开票日期',
             type: 'date',
-            required: true,
         },
         {
             name: 'amount',
@@ -538,7 +537,7 @@ export const eachChildInfos={
             name: 'issueDate',
             dbName: 'invoiceDate',
             label: '开票日期',
-            type: 'string',
+            type: 'date',
             required: true,
         },{
             name: 'checkCode',
@@ -639,7 +638,7 @@ export const eachChildInfos={
             name: 'issueDate',
             dbName: 'invoiceDate',
             label: '开票日期',
-            type: 'string',
+            type: 'date',
             required: true,
         },{
             name: 'checkCode',

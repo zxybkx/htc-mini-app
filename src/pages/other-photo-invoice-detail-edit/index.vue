@@ -36,6 +36,9 @@
             }
         }
     }
+    .picker{
+        width: 100%;
+    }
     .btnBox{
         position: fixed;
         bottom: 0rpx;
@@ -104,11 +107,13 @@ export default{
         //     this.currentInvoiceInfo[e.target.dataset.name]=e.$wx.detail.value;
         // },
         handleChange(e){
-            let tempCurrentCompany=JSON.parse(JSON.stringify(this.currentInvoiceInfo));
-            tempCurrentCompany[e.target.dataset.name]=e.detail.value.replace(/\//g,'-');
-            // console.log('eee',e);
-            
-            this.currentInvoiceInfo=tempCurrentCompany;
+            if(e.detail.value){
+                let tempCurrentCompany=JSON.parse(JSON.stringify(this.currentInvoiceInfo));
+                tempCurrentCompany[e.target.dataset.name]=e.detail.value.replace(/\//g,'-');
+                // console.log('eee',e);
+                
+                this.currentInvoiceInfo=tempCurrentCompany;
+            }
         },
         handleSubmit(){
             
