@@ -9,7 +9,6 @@ node_build:
   # image: registry.hdsd.cn/operation-hdbsp-uat2/hdbsp-npm:1.0  # 离线打包
   stage: node_build
   script:
-    - node_module
     - node_build
   only:
     - uat
@@ -45,15 +44,11 @@ docker_build:
   echo "gitlab-ci -- 缓存目录: $TEMP_DIR"
 
 
-
-  function node_module(){
-      echo "==: 开始安装依赖"
-      node -v
-      yarn config set ignore-engines true
-      yarn install
-  }
-
   function node_build(){
+  echo "==: 开始安装依赖"
+        node -v
+        yarn config set ignore-engines true
+        yarn install
       echo "编译小程序"
       npm run build
   }
