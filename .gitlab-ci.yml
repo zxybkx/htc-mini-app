@@ -53,7 +53,15 @@ docker_build:
       yarn install
       echo "编译小程序"
       npm run build
+      back_node_cache_and_build_cache
   }
+
+  function back_node_cache_and_build_cache(){
+      echo "===: 缓存文件"
+      mkdir -p $TEMP_DIR
+      tar -zcf $TEMP_DIR/dist.tar.gz ./dist
+  }
+
 
   export GROUP_NAME=htc
   export DOCKER_USER=User6371438
