@@ -1,3 +1,305 @@
-.successContainer{
+  *{
+    padding: 0;
+    margin: 0;
+  }
+  html,body{
+    background: #f5f5f5;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    height: 100%;
+    width: 100%;
+    overflow-y:auto;
+  }
+  input,textarea{
+    outline:0px;
+  }
+  .c-flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .topBox{
+    padding: 16px;
+    background: #fff;
+  }
+  .topBox .title{
+    justify-content: flex-start;
+  }
+  .topBox .left{
+      font-size: 18px;
+      font-weight: bold;
+      color: #262626;
+      line-height: 48px;
+      letter-spacing: 2px;
+  }
+  .topBox .right{
+    width: 80px;
+    height: 24px;
+    background: #E6F7FF;
+    border-radius: 12px;
+    margin-left: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #1890FF;
+    letter-spacing: 1px;
+  }
+  .desc{
+    font-size: 12px;
+    font-weight: bold;
+    color: #8C8C8C;
+    letter-spacing: 1px;
+  }
+  .invoiceListContainer{
+    background: #FFFFFF;
+    border-radius: 8px;
+    margin: 20px 16px;
+    padding: 12px 16px;
+  }
+  .invoiceList{
+    justify-content: flex-start;
+    margin-top: 12px;
+  }
+  .invoiceListContainer .title{
+    font-size: 12px;
+    font-weight: bold;
+    color: #096DD9;
+  }
+  .invoiceList .left{
+    margin-right: 24px;
+    font-size: 15px;
+    font-weight: 400;
+    color: #8C8C8C;
+    display: block;
+    width: 70px;
+    flex-shrink: 0;
+  }
+  .invoiceList .right{
+    font-size:15px;
+    font-weight: bold;
+    color: #262626;
+  }
+  
+  /* 首页css */
+  .indexPage{
+  
+  }
+  .header{
+    background: #fff;
+    padding: 12px 16px 0;
+  }
+  .long{
+    padding: 0 12px;
+    border-radius: 4px;
+    border: 2px solid #F0F0F0;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+    box-sizing:border-box;
+  }
+  .long .tag{
+    background: #09D6D6;
+    border-radius: 2px;
+    padding: 2px 4px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #FFFFFF;
+    margin-right: 6px;
+  }
+  .long .invoiceName{
+    font-size:15px;
+    font-weight: bold;
+    color: #262626;
+  }
+  .long .invoiceDesc{
+    margin: 10px 0 12px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #8C8C8C;
+  }
+  .short{
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .active{
+    border-color: #1890FF;
+  }
+  /* 面板 */
+  .panel{
+    background: #fff;
+    margin-top: 9px;
+  }
+  .panel .title{
+    margin-left: 16px;
+    padding-top: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #096DD9;
+  }
+  .inv-list {
+    border-bottom: 1px solid #F0F0F0;
+    justify-content: space-between;
+    padding: 12px 16px;
+  }
+  .inv-list .left{
+    width:90px;
+    flex-shrink: 0;
+    font-size: 15px;
+    font-weight: 400;
+    color: #8C8C8C;
+  }
+  .inv-list .right{
+    font-size: 15px;
+    font-weight: bold;
+    color: #262626;
+    border:none;
+    width:100%;
+  }
+  
+  /* 商品卡片 */
+  .goodsCard{
+    padding: 12px 16px;
+    border-bottom: 1px solid #F0F0F0;
+  
+  }
+  .goodsName{
+    justify-content: space-between;
+  }
+  .goodsName .goodsTitle{
+    font-size: 15px;
+    font-weight: bold;
+    color: #595959;
+    margin-right: 12px;
+  }
+  .goodsName .price{
+    font-size: 15px;
+    font-weight: bold;
+    color: #FF8F07;
+  }
+  .goodsCard .Specifications{
+    margin: 8px 0;
+    font-size: 12px;
+    font-weight: bold;
+    color: #8C8C8C;
+  }
+  .other{
+    justify-content: flex-start;
+    font-size: 12px;
+    font-weight: bold;
+  }
+  .other p:nth-child(1){
+    padding: 0 6px;
+    border-radius: 2px;
+    border: 1px solid #40A9FF;
+    margin-right: 8px;
+    color: #096DD9;
+  }
+  .other p:nth-child(2){
+    padding: 0 6px;
+    border-radius: 2px;
+    border: 1px solid #FF8F07;
+    margin-right: 8px;
+    color: #FF8F07;
+  }
+  .other p:nth-child(3){
+    padding: 0 6px;
+    border-radius: 2px;
+    border: 1px solid #19A633;
+    margin-right: 8px;
+    color: #19A633;
+  }
+  .other p:nth-child(4){
+    padding: 0 6px;
+    border-radius: 2px;
+    border: 1px solid red;
+    margin-right: 8px;
+    color: red;
+  }
+  /* 底部按钮 */
+  .bottom{
+    margin-top:9px;
+    background: #fff;
+    padding: 16px 16px 24px;
+    justify-content: space-between;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .bottom p:nth-child(1){
+    width: 125px;
+    height: 45px;
+    border-radius: 22px;
+    border: 2px solid #D9D9D9;
+    color: #595959;
+    letter-spacing: 4px;
+  }
+  .bottom p:nth-child(2){
+    width: 210px;
+    height: 45px;
+    border-radius: 22px;
+    background: #1890FF;
+    color: #FFFFFF;
+    letter-spacing: 4px;
+  }
+  /* 发票详情 */
+  .invoiceInfoContainer{
+    height: 100%;
+    background: rgba(0, 0,0, 0.6);
+    width: 100%;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    left: 0;
+  }
+  .invoiceInfo{
+    margin: 16px 16px;
+    background: #fff;
+    border-radius: 8px;
+    box-sizing: border-box;
+    padding: 16px;
+    font-size: 15px;
     
-}
+  }
+  .invoiceInfo .title{
+    font-size: 20px;
+    font-weight: bold;
+    color: #8F3930;
+    text-align: center;
+    position: relative;
+    margin-top:10px;
+  }
+  .invoiceInfo .title .circleContainer{
+    position: absolute;
+    top:-6px;
+    left:0;
+    right:0;
+  }
+  .invoiceInfo .title .circle1{
+    display: block;
+    width: 66px;
+    height: 38px;
+    border: 2px solid #FCCAD3;
+    border-radius: 50% / 50%;
+  }
+  .invoiceInfo .title .circle2{
+    display: block;
+    width: 56px;
+    height: 30px;
+    border: 1px solid #FCCAD3;
+    border-radius: 50% / 50%;
+  }
+  .invoiceInfo .list{
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 16px;
+  }
+  .invoiceInfo .border{
+    border-bottom: 1px dashed #D6D7D8;
+  }
+  .invoiceInfo .list .label{
+    flex-shrink: 0;
+    margin-right: 24px;
+  
+    font-weight: 400;
+    color: #8C8C8C;
+  }
+  .invoiceInfo .list .value{
+    font-weight: bold;
+    color: #262626;
+  }

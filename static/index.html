@@ -38,11 +38,7 @@
                 font-size: 12px;
             }
             .wechatContainer{
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
                 position: relative;
-                padding: 0;
                 overflow:visible;
             }
             .wechatContainer button{
@@ -81,12 +77,13 @@
                 useShadowDom: true
             })
         }
-        //const BASE_URL = 'https://htaxuat.htc.hand-china.com';
+        // 本地调试命令 live-server --host=10.211.107.250 --proxy=/hiop:http://10.211.110.1:9880
+        // const BASE_URL = 'https://htaxuat.htc.hand-china.com';
         const BASE_URL = 'BUILD_QR_CODE_BASE_URL';
         // const BASE_URL = 'http://10.211.144.56:9880';
 
         // const BASE_URL = 'http://htcuatcollector.htc.hand-china.com';
-        // const BASE_URL = '/proxy';
+        // const BASE_URL = '';
         // const testcode='0d7fc19d33ffd86c3b7c52a09ca8ce89241bdcc683ec43b7d6e46ef9461c8b4a0d7fc19d33ffd86c3b7c52a09ca8ce89241bdcc683ec43b7d6e46ef9461c8b4a0d7fc19d33ffd86c3b7c52a09ca8ce89241bdcc683ec43b7d6e46ef9461c8b4a0d7fc19d33ffd86c3b7c52a09ca8ce89241bdcc683ec43b7d6e46ef9461c8b4a';
         const APIURL={
             search:`${BASE_URL}/hiop/v1/0/reservation/query-by-code`,
@@ -134,167 +131,249 @@
                 invoiceTypeObj:{},
                 pickerType:0, // 0=> 开票类型 1=>企业类型
                 companyList:[],
+                paperRecipient:'',
+                paperPhone:'',
+                paperAddress:'',
+                modelTag:false,//发票预览
+                total:0
             },
             template: `
             <div v-if='!uaType'>
                 <p class='finishStatus'>请使用微信扫描打开</p>
             </div>
-            <div v-else>
-                <div v-if="requestStatus!=='C'">
-                    <div>
-                        
+            <div v-else style='height:100%;'>
+                <div v-if="requestStatus==='C'">
+                    <div class="topBox">
+                        <div class="c-flex title">
+                            <p class="left">发票已成功预约</p>
+                            <p class="c-flex right">汇税通开票</p>
+                        </div>
+                        <div class="desc">您的开票预约已成功提交给商家，电子发票请及时查看收件信息！纸质发票请等待商家邮寄！</div>
                     </div>
-                    <p class='finishStatus' v-if='invoiceTypeObj.value!=="51"&&invoiceTypeObj.value!=="52"'>您已提交开票申请，请等待发票开具。</p>
-                    <p class='finishStatus' v-else>您已提交开票申请，请等待邮箱或短信推送。</p>
+                    <div class="invoiceListContainer">
+                        <p class="title">发票信息</p>
+                        <p class="c-flex invoiceList">
+                            <span class="left">发票类型</span>
+                            <span class="right">{{invoiceTypeObj.description}}</span>
+                        </p>
+                        <p class="c-flex invoiceList">
+                            <span class="left">发票抬头</span>
+                            <span class="right">{{buyerName}}</span>
+                        </p>
+                        <p class="c-flex invoiceList">
+                            <span class="left">公司税号</span>
+                            <span class="right">{{buyerTaxNo}}</span>
+                        </p>
+                        <p class="c-flex invoiceList">
+                            <span class="left">发票金额</span>
+                            <span class="right" style="color:#DF3549">¥{{total.toFixed(2)}}</span>
+                        </p>
+                    </div>
                 </div>
-                <div  v-else>
-                    <van-field
-                        :value='resultInfo.salerName'
-                        label="商家名称"
-                        readonly
-                        placeholder="请输入商家名称"
-                    />
-                    <van-field
-                        :value='resultInfo.requestNumber'
-                        label="订单号"
-                        readonly
-                    />
-                    <van-field
-                        :value='resultInfo.totalAmount&&resultInfo.totalAmount.toFixed(2)'
-                        label="开具金额"
-                        readonly
-                    />
-                    <van-field
-                        :value='resultInfo.createTime'
-                        label="订单日期"
-                        readonly
-                    />
-                    <van-field
-                        :value="invoiceTypeObj.meaning"
-                        readonly
-                        clickable
-                        name="picker"
-                        label="开票类型"
-                        placeholder="选择开票类型"
-                        @click="handleInvoiceTypeShow"
-                        required
-                    />
-                    <van-field
-                        :value="businessTypeObj.meaning"
-                        clickable
-                        readonly
-                        name="picker"
-                        label="企业类型"
-                        required
-                        placeholder="选择企业类型"
-                        @click="handleCompanyTypeShow"
-                    />
-                    <div class='wechatContainer van-cell' v-if="requestStatus==='N'">
-                        <van-field
-                            label="购方名称"
-                            placeholder="输入购方名称"
-                            v-model.lazy="buyerName"
-                            @input='handleChangeBuyName'
-                            maxlength=100
-                            required
-                        />
-                        <!--<van-button round  type="info" size="small" @click='handleWechat'>微信获取</van-button>-->
-                        <van-radio-group class='selectList' v-if='selectListTag&&companyList.length'>
-                            <van-cell-group>
-                                <van-cell v-for='(item,index) in companyList' :title="item.receiptName" :key='index' clickable @click="handleCompanyList(item)"></van-cell>
-                            </van-cell-group>
-                        </van-radio-group>
-                    </div>
-                    <van-field
-                        label="购方名称"
-                        v-model="buyerName"
-                        readonly
-                        required
-                        v-else
-                    />
-                    <van-field
-                        label="购方税号"
-                        v-model="buyerTaxNo"
-                        placeholder="输入购方税号"
-                        maxlength=20
-                        :readonly='requestStatus!=="N"'
-                        :required='businessTypeObj.value==="01"'
-                    />
-                    <van-field
-                        label="购方地址电话"
-                        placeholder="输入购方地址电话"
-                        maxlength=200
-                        :readonly='requestStatus!=="N"'
-                        v-model="buyerAddressPhone"
-                        :required='invoiceTypeObj.value==="0"?true:false'
-                    />
-                    <van-field
-                        label="购方银行账号"
-                        placeholder="输入购方银行账号"
-                        maxlength=200
-                        type='string'
-                        :readonly='requestStatus!=="N"'
-                        v-model="buyerAccount"
-                        :required='invoiceTypeObj.value==="0"?true:false'
-                    />
-                    <van-field
-                        label="手机号"
-                        placeholder="输入手机号"
-                        type='number'
-                        :disabled='requestStatus==="N"&&electronicEmail?true:false'
-                        :readonly='(invoiceTypeObj.value!=="51"&&invoiceTypeObj.value!=="52")||requestStatus!=="N"'
-                        v-model="electronicPhone"
-                    />
-                    <van-field
-                        label="邮箱"
-                        placeholder="输入邮箱"
-                        :disabled='requestStatus==="N"&&electronicPhone?true:false'
-                        :readonly='(invoiceTypeObj.value!=="51"&&invoiceTypeObj.value!=="52")||requestStatus!=="N"'
-                        v-model="electronicEmail"
-                    />
-                    <van-divider content-position="center"><b>商品明细</b></van-divider>
-                    
-                    <div class='tableContainer' v-if='resultInfo.requisitionLines'>
-                        <table  border="1" rules='all' width='100%'>
-                            <tr>
-                                <th>序号</th>
-                                <th>商品名称</th>
-                                <th>单价</th>
-                                <th>数量</th>
-                                <th>金额</th>
-                                <th>税率</th>
-                                <th>税额</th>
-                            </tr>
-                            <tr align='center' v-for='(item,index) in resultInfo.requisitionLines' key='index'>
-                                <td>{{index+1}}</td>
-                                <td>{{item.projectName}}</td>
-                                <td>{{item.price}}</td>
-                                <td>{{item.quantity}}</td>
-                                <td>{{item.amount&&item.amount.toFixed(2)}}</td>
-                                <td>{{item.taxRate}}</td>
-                                <td>{{item.taxAmount&&item.taxAmount.toFixed(2)}}</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div style='margin:40px;' v-if='requestStatus==="N"'>
-                        <van-button style='border-radius:10px;' block type="info" size="small" @click='handleSubmit'>提交开票</van-button>
-                    </div>
-                    <div v-else>
-                        <div style='margin:40px;' v-if="invoiceTypeObj.value==='51'||invoiceTypeObj.value==='52'">
-                            <!--<van-button style='border-radius:10px;' type="info" size="small" @click='handlePush'>重新推送</van-button>-->
-                            <van-button style='border-radius:10px;' block type="info" size="small" @click='handleDownLoad'>下载发票</van-button>
+                <div v-else>
+                    <div class="header">
+                        <div class="short c-flex">
+                            <div 
+                                :class="item.value===invoiceTypeObj.value?'long active':'long'" 
+                                :style="(resultInfo.invoiceTypeLovList.length%2)&&index===0?'width:100%':''"
+                                v-for='(item,index) in resultInfo.invoiceTypeLovList'
+                                @click='handleInvoiceTypeSelect(index)'
+                            >
+                                <p style='padding: 16px 0 8px;border-bottom:1px dashed #D9D9D9'>
+                                    <span class="tag" style='background:#1890FF' v-if="item.value==='51'||item.value==='52'">电子</span>
+                                    <span class="tag" v-else-if="item.value==='41'">卷式</span>
+                                    <span class="tag" style='background:#FF8F07' v-else>纸质</span>
+                                    <span class="invoiceName">{{item.description.slice(0,7)}}</span>
+                                </p>
+                                <p class="invoiceDesc">发票开具后请注意验收</p>
+                            </div>
                         </div>
                     </div>
-                    <van-popup v-model="showPicker" position="bottom">
-                        <van-picker
-                            value-key='meaning'
-                            show-toolbar
-                            :columns="columns"
-                            @confirm="handleConfirm"
-                            @cancel="showPicker = false"
-                        />
-                    </van-popup>
+                    <div class="panel">
+                        <p class="c-flex inv-list">
+                            <span class="left">商家名称</span>
+                            <span class="right">{{resultInfo.salerName}}</span>
+                        </p>
+                        <p class="c-flex inv-list">
+                            <span class="left">开具金额</span>
+                            <span class="right">{{total.toFixed(2)}}</span>
+                        </p>
+                        <p class="c-flex inv-list">
+                            <span class="left">订单日期</span>
+                            <span class="right">{{resultInfo.createTime}}</span>
+                        </p>
+                        <p class="c-flex inv-list">
+                            <span class="left">订单号</span>
+                            <span class="right">{{resultInfo.requestNumber}}</span>
+                        </p>
+                    </div>
+                    <div class="panel">
+                        <p class="title">购方信息</p>
+                        <p class="c-flex inv-list">
+                            <span class="left">企业类型<span style="color:#FF4031">*</span></span>
+                            <span class="right" @click="handleCompanyTypeShow">{{businessTypeObj.meaning}}</span>
+                        </p>
+                        <p class="c-flex inv-list wechatContainer">
+                            <span class="left">购方名称<span style="color:#FF4031">*</span></span>
+                            <input type="text" class="right"  @input='handleChangeBuyName' v-model="buyerName"/>
+                            <van-radio-group class='selectList' v-if='selectListTag&&companyList.length'>
+                                <van-cell-group>
+                                    <van-cell v-for='(item,index) in companyList' :title="item.receiptName" :key='index' clickable @click="handleCompanyList(item)"></van-cell>
+                                </van-cell-group>
+                            </van-radio-group>
+                        </p>
+                        <p class="c-flex inv-list">
+                            <span class="left">购方税号</span>
+                            <input type="text" class="right" v-model="buyerTaxNo"/>
+                        </p>
+                        <p class="c-flex inv-list">
+                            <span class="left">地址/电话<span v-if='invoiceTypeObj.value==="0"' style="color:#FF4031">*</span></span>
+                            <textarea 
+                                maxlength=200
+                                :readonly='requestStatus!=="N"'
+                                v-model="buyerAddressPhone"
+                                type="text"
+                                class="right"
+                            >
+                            </textarea>
+                        </p>
+                        <p class="c-flex inv-list">
+                            <span class="left">银行账号<span v-if='invoiceTypeObj.value==="0"' style="color:#FF4031">*</span></span>
+                            <textarea 
+                                maxlength=200
+                                :readonly='requestStatus!=="N"'
+                                v-model="buyerAccount"
+                                type="text"
+                                class="right"
+                            >
+                            </textarea>
+                        </p>
+                    </div>
+                    <div class="panel" v-if="invoiceTypeObj.value==='51'||invoiceTypeObj.value==='52'">
+                        <p class="title">收件信息</p>
+                        <p class="c-flex inv-list">
+                            <span class="left">手机号<span style="color:#FF4031" v-if='!electronicEmail'>*</span></span>
+                            <input 
+                                type="text"
+                                class="right"
+                                type='number'
+                                placeholder="输入手机号"
+                                :disabled='requestStatus==="N"&&electronicEmail?true:false'
+                                :readonly='(invoiceTypeObj.value!=="51"&&invoiceTypeObj.value!=="52")||requestStatus!=="N"'
+                                v-model="electronicPhone"
+                            />
+                        </p>
+                        <p class="c-flex inv-list">
+                            <span class="left">邮箱<span style="color:#FF4031" v-if='!electronicPhone'>*</span></span>
+                            <input 
+                                type="text"
+                                class="right"
+                                placeholder="输入邮箱"
+                                :disabled='requestStatus==="N"&&electronicPhone?true:false'
+                                :readonly='(invoiceTypeObj.value!=="51"&&invoiceTypeObj.value!=="52")||requestStatus!=="N"'
+                                v-model="electronicEmail"
+                            />
+                        </p>
+                    </div>
+                    <div class="panel" v-else>
+                        <p class="title">收件人信息</p>
+                        <p class="c-flex inv-list">
+                            <span class="left">收件人</span>
+                            <input 
+                                type="text"
+                                class="right"
+                                v-model="paperRecipient"
+                                placeholder="输入收件人"
+                            />
+                        </p>
+                        <p class="c-flex inv-list">
+                            <span class="left">收件地址</span>
+                            <input 
+                                type="text"
+                                class="right"
+                                v-model="paperAddress"
+                                placeholder="输入收件地址"
+                            />
+                        </p>
+                        <p class="c-flex inv-list">
+                            <span class="left">收件电话</span>
+                            <input 
+                                type="text"
+                                class="right"
+                                type='number'
+                                v-model="paperPhone"
+                                placeholder="输入收件电话"
+                            />
+                        </p>
+                    </div>
+                    <div class="panel">
+                        <p class="title">商品信息</p>
+                        <div class="goodsCard" v-for='(item,index) in resultInfo.requisitionLines' key='index'>
+                            <div class="c-flex goodsName">
+                                <p class="goodsTitle">{{item.projectName}}</p>
+                                <p class="price" v-if='item.taxIncludedFlag===0'>{{(item.amount+item.taxAmount).toFixed(2)}}</p>
+                                <p class="price" v-else>{{item.amount.toFixed(2)}}</p>
+                            </div>
+                            <div v-if='item.price&&item.quantity'>
+                                <div class="Specifications" v-if='item.taxIncludedFlag===0'>{{(item.amount+item.taxAmount)/item.quantity}}元/份</div>
+                                <div class="Specifications" v-else>{{item.price}}元/份</div>
+                            </div>
+                            
+                            <div class="c-flex other">
+                                <p class="c-flex" v-if='item.price&&item.quantity'>*{{item.quantity}}</p>
+                                <p class="c-flex">税率{{item.taxRate}}</p>
+                                <p class="c-flex">税额{{item.taxAmount&&item.taxAmount.toFixed(2)}}</p>
+                                <p class="c-flex"  v-if='item.discountAmount' style='color:red;'>
+                                    折扣
+                                    {{item.taxIncludedFlag===0?((item.discountAmount)*(1+Number(item.taxRate))).toFixed(2):item.discountAmount.toFixed(2)}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bottom c-flex">
+                        <p class="c-flex" @click='handlePreview'>预览</p>
+                        <p class="c-flex" @click='handleSubmit'>提交发票</p>
+                    </div>
                 </div>
+                <div class='invoiceInfoContainer' v-if='modelTag' @click='handleClose'>
+                    <div class="invoiceInfo">
+                        <div class="title">
+                            <div class="c-flex circleContainer">
+                                <span class="circle1"></span>
+                            </div>
+                            <div class="c-flex circleContainer" style="top:-1px;">
+                                <span class="circle2"></span>
+                            </div>
+                            <p style="position:relative;z-index:999;">
+                                增值税普通发票（电子）
+                            </p>
+                        </div>
+                        <p class="c-flex list" style="justify-content: flex-start;margin-top:16px">
+                            <span class="label">购方名称</span>
+                            <span class="value">{{buyerName}}</span>
+                        </p>
+                        <p class="c-flex list border" style="justify-content: flex-start">
+                            <span class="label">销方名称</span>
+                            <span class="value">{{resultInfo.salerName}}</span>
+                        </p>
+                        <p class="c-flex list" style="margin-top:16px">
+                            <span class="label">合计金额</span>
+                            <span class="value" style="color:#DF3549">¥{{total.toFixed(2)}}</span>
+                        </p>
+                        <p class="c-flex list border">
+                            <span class="label">开票日期</span>
+                            <span class="value">--</span>
+                        </p>
+                        <p class="c-flex list" style="margin-top:16px">
+                            <span class="label">发票代码</span>
+                            <span class="value">--</span>
+                        </p>
+                        <p class="c-flex list">
+                            <span class="label">发票号码</span>
+                            <span class="value">--</span>
+                        </p>
+                    </div>
+                </div>    
             </div>
             `,
             methods: {
@@ -356,13 +435,13 @@
                     )[0]);
                     this.selectListTag=false;
                 },
-                handleChangeBuyName:_.debounce(function(value){
+                handleChangeBuyName:_.debounce(function(e){
                     axios({
                         method:'get',
                         url:APIURL.relevance(this.resultInfo.tenantId),
                         params:{
                             companyId:this.resultInfo.companyId,
-                            receiptName:value,
+                            receiptName:e.target.value,
                         },
                     })
                     .then(res=>{
@@ -386,14 +465,18 @@
                     }
                     this.showPicker = false;
                 },
-                handleInvoiceTypeShow(){
-                    if(this.requestStatus==='N'){
-                        // 未提交
-                        this.pickerType=0;
-                        this.showPicker=true;
-                        this.columns=this.resultInfo.invoiceTypeLovList;
-                    }
+                // 发票选择
+                handleInvoiceTypeSelect(index){
+                    this.invoiceTypeObj=this.resultInfo.invoiceTypeLovList[index];
                 },
+                // handleInvoiceTypeShow(){
+                //     if(this.requestStatus==='N'){
+                //         // 未提交
+                //         this.pickerType=0;
+                //         this.showPicker=true;
+                //         this.columns=this.resultInfo.invoiceTypeLovList;
+                //     }
+                // },
                 handleCompanyTypeShow(){
                     if(this.requestStatus==='N'){
                         // 未提交
@@ -450,18 +533,37 @@
                             return; 
                         } 
                     }
+
+                    if(this.invoiceTypeObj.value==='51'||this.invoiceTypeObj.value==='52'){
+                        this.paperRecipient=''
+                        this.paperPhone=''
+                        this.paperAddress=''
+                    }else{
+                        this.buyerAddressPhone='';
+                        this.electronicEmail='';
+                    }
                     let param={
                         ...this.resultInfo,
                         invoiceType:this.invoiceTypeObj.value,
                         buyerType:this.businessTypeObj.value,
-                        receiptType:this.businessTypeObj.value,
                         buyerName:this.buyerName,
                         buyerTaxNo:this.buyerTaxNo,
                         buyerAccount:this.buyerAccount,
                         buyerAddressPhone:this.buyerAddressPhone,
                         electronicEmail:this.electronicEmail,
                         electronicPhone:this.electronicPhone,
+                        paperRecipient:this.paperRecipient,
+                        paperPhone:this.paperPhone,
+                        paperAddress:this.paperAddress,
+
+                        receiptAccount: this.buyerAccount,
+                        receiptAddressPhone: this.buyerAddressPhone,
+                        receiptName: this.buyerName,
+                        receiptTaxNo: this.buyerTaxNo,
+                        receiptType:this.businessTypeObj.value,
                     }
+                    // console.log('param',param);
+                    // return;
                     // 开始提交
                     vant.Toast.loading({
                         duration:0,
@@ -489,11 +591,17 @@
                         vant.Toast.clear()
                         vant.Toast('提交出错请重试');
                     })
+                },
+                handlePreview(){
+                    this.modelTag=true;
+                },
+                handleClose(){
+                    this.modelTag=false;
                 }
             },
             created(){
                 // initConsole()
-                this.uaType=!uaFn();
+                this.uaType=uaFn();
                 if(!this.uaType)return;
                 vant.Toast.loading({
                     duration:0,
@@ -530,7 +638,13 @@
                         return;
                     }
                     // 保留两位小数
-                    const resData=response.data.data;
+                    const resData=response.data.data.data;
+                    if(response.data.data.requestStatus==='F'){
+                        console.log(resData);
+                        localStorage.setItem("invoiceList", JSON.stringify(resData));
+                        window.location.href='./preview.html';
+                        return;
+                    }
                     if(resData.requestStatus==='Q'){
                         resData.requestStatus='N';
                     }
@@ -545,6 +659,26 @@
                     this.electronicEmail=resData.electronicEmail,
                     this.electronicPhone=resData.electronicPhone,
                     this.requestStatus=resData.requestStatus;
+
+                    this.paperRecipient=this.paperRecipient;
+                    this.paperPhone=this.paperPhone;
+                    this.paperAddress=this.paperAddress;
+                    // 计算总金额
+                    resData.requisitionLines.forEach(item=>{
+                        if(item.taxIncludedFlag===0){
+                            if(item.discountAmount){
+                                this.total+=(item.amount+item.taxAmount-item.discountAmount);
+                            }else{
+                                this.total+=item.amount+item.taxAmount;
+                            }
+                        }else{
+                            if(item.discountAmount){
+                                this.total+=item.amount-item.discountAmount;
+                            }else{
+                                this.total+=item.amount;
+                            }
+                        }
+                    })
                     // 处理默认开票类型
                     this.invoiceTypeObj=resData.invoiceTypeLovList[0];
                     resData.invoiceTypeLovList.forEach(item=>{

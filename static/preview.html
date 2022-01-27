@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- pdf -->
+    <link rel="stylesheet" href="css/preview.css" />
+    <!-- 引入样式文件 -->
+    <link
+        rel="stylesheet"
+        href="./css/index.css"
+    />
+    <script src="./js/eruda.min.js"></script>
+    <script src="./js/vue.min.js"></script>
+    <script src="./js/vant.min.js"></script>
+    <title>发票预览</title>
+    <style>
+       
+    </style>
+</head>
+<body>
+    <div id='app'></div>
+</body>
+<script>
+    let initConsole = function() {
+        let el = document.createElement('div')
+        document.body.appendChild(el)
+        eruda.init({
+            container: el,
+            tool: ['console', 'elements', 'Network', 'Info'],
+            useShadowDom: true
+        })
+    }
+    new Vue({
+            el: '#app',
+            data:{
+                list:[]
+            },
+            template: `
+            <div>
+                <div class="invoiceInfo" v-for='(item,index) in list' key='index' @click='handleDownLoad(item.downloadFile)'>
+                    <div class="title">
+                        <div class="c-flex circleContainer">
+                            <span class="circle1"></span>
+                        </div>
+                        <div class="c-flex circleContainer" style="top:-1px;">
+                            <span class="circle2"></span>
+                        </div>
+                        <p style="position:relative;z-index:999;">
+                            {{item.invoiceVarietyMeaning}}
+                        </p>
+                    </div>
+                    <p class="c-flex list" style="justify-content: flex-start;margin-top:16px">
+                        <span class="label">购方名称</span>
+                        <span class="value">{{item.buyerName}}</span>
+                    </p>
+                    <p class="c-flex list border" style="justify-content: flex-start">
+                        <span class="label">销方名称</span>
+                        <span class="value">{{item.sellerName}}</span>
+                    </p>
+                    <p class="c-flex list" style="margin-top:16px">
+                        <span class="label">合计金额</span>
+                        <span class="value" style="color:#DF3549">¥{{item.totalPriceTaxAmount}}</span>
+                    </p>
+                    <p class="c-flex list border">
+                        <span class="label">开票日期</span>
+                        <span class="value">{{item.creationDate.slice(0,11)}}</span>
+                    </p>
+                    <p class="c-flex list" style="margin-top:16px">
+                        <span class="label">发票代码</span>
+                        <span class="value">{{item.invoiceCode||'--'}}</span>
+                    </p>
+                    <p class="c-flex list">
+                        <span class="label">发票号码</span>
+                        <span class="value">{{item.invoiceNo||'--'}}</span>
+                    </p>
+                </div>
+            </div>
+            `,
+            methods: {
+                handleDownLoad(url){
+                    localStorage.setItem("pdfUrl", JSON.stringify(url));
+                    if(!url){
+                        vant.Toast('发票为纸票');
+                        return;
+                    }
+                    window.location.href='./pdf.html'; 
+                },
+            },    
+            created(){
+                const listArray =JSON.parse(localStorage.getItem('invoiceList'));
+                console.log(listArray);
+                this.list=listArray;
+            }
+    })
+</script>
+</html>

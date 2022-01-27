@@ -34,17 +34,22 @@
     }
     window.onload=()=>{
         // initConsole()
-        const pdfArray =JSON.parse(localStorage.getItem('pdfArray'));
-        console.log(localStorage.getItem("pdfArray"));
-        if(pdfArray&&pdfArray.length){
-            pdfArray.forEach((item,index) => {
-                const txt=`<div id='pdf${index}' class='pdf'></div>`;
-                $('body').append(txt);
-                new Pdfh5(`#pdf${index}`, {
-                    data: atob(item)
-                });
-            });
-        }
+        const pdfUrl =JSON.parse(localStorage.getItem('pdfUrl'));
+        console.log(localStorage.getItem("pdfUrl"));
+        const txt=`<div id='pdf' class='pdf'></div>`;
+        $('body').append(txt);
+        new Pdfh5(`#pdf`, {
+            data: atob(pdfUrl)
+        });
+        // if(pdfArray&&pdfArray.length){
+        //     pdfArray.forEach((item,index) => {
+        //         const txt=`<div id='pdf${index}' class='pdf'></div>`;
+        //         $('body').append(txt);
+        //         new Pdfh5(`#pdf${index}`, {
+        //             data: atob(item)
+        //         });
+        //     });
+        // }
     }
 </script>
 </html>
