@@ -9,7 +9,6 @@ node_build:
   # image: registry.hdsd.cn/operation-hdbsp-uat2/hdbsp-npm:1.0  # 离线打包
   stage: node_build
   script:
-    - node_module
     - node_build
   only:
     - uat
@@ -45,24 +44,30 @@ docker_build:
   echo "gitlab-ci -- 缓存目录: $TEMP_DIR"
 
 
-
-  function node_module(){
+  function node_build(){
+      echo "删除dist"
+      rm -rf ./dist
       echo "==: 开始安装依赖"
       node -v
-      yarn config set ignore-engines true
       yarn install
-  }
-
-  function node_build(){
       echo "编译小程序"
       npm run build
+      back_node_cache_and_build_cache
   }
+
+  function back_node_cache_and_build_cache(){
+      echo "===: 缓存文件"
+      mkdir -p $TEMP_DIR
+      tar -zcf $TEMP_DIR/dist.tar.gz ./dist
+  }
+
 
   export GROUP_NAME=htc
   export DOCKER_USER=User6371438
   export DOCKER_PWD=User6371438PWD
   function docker_build(){
       # cp -r /cache/${CI_PROJECT_NAME}-${CI_PROJECT_ID}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}/* ${1:-"."}
+      echo "===: 释放文件 $TEMP_DIR/dist.tar.gz"
       tar -zxf $TEMP_DIR/dist.tar.gz
       docker login -u ${DOCKER_USER} -p ${DOCKER_PWD} ${DOCKER_REGISTRY}
       docker build --pull -t ${DOCKER_REGISTRY}/${GROUP_NAME}/htc-uni:${CI_COMMIT_TAG} ${1:-"."}
