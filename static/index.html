@@ -334,6 +334,15 @@
                         <p class="c-flex" @click='handlePreview'>预览</p>
                         <p class="c-flex" @click='handleSubmit'>提交发票</p>
                     </div>
+                    <van-popup v-model="showPicker" position="bottom">
+                        <van-picker
+                            value-key='meaning'
+                            show-toolbar
+                            :columns="columns"
+                            @confirm="handleConfirm"
+                            @cancel="showPicker = false"
+                        />
+                    </van-popup>
                 </div>
                 <div class='invoiceInfoContainer' v-if='modelTag' @click='handleClose'>
                     <div class="invoiceInfo">
@@ -539,7 +548,7 @@
                         this.paperPhone=''
                         this.paperAddress=''
                     }else{
-                        this.buyerAddressPhone='';
+                        this.electronicPhone='';
                         this.electronicEmail='';
                     }
                     let param={
