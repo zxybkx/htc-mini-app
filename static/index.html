@@ -507,12 +507,11 @@
                 },
                 // 提交开票
                 handleSubmit(){
-
                     if(!this.businessTypeObj.meaning||!this.buyerName.trim()){
                         vant.Toast('必填项为空');
                         return;
                     }
-                    if(this.businessTypeObj==='01'&&!this.buyerTaxNo.trim()){
+                    if(['01', '02'].includes(this.businessTypeObj.value)&&!this.buyerTaxNo.trim()){
                         vant.Toast('必填项为空');
                         return;
                     }
