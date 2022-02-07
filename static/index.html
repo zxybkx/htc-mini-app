@@ -60,13 +60,13 @@
                 width: 100%;
                 border-radius: 30px;
             }
-            
+
         </style>
     </head>
     <body>
         <div id='app'></div>
     </body>
-    
+
     <script>
         let initConsole = function() {
             let el = document.createElement('div')
@@ -173,8 +173,8 @@
                 <div v-else>
                     <div class="header">
                         <div class="short c-flex">
-                            <div 
-                                :class="item.value===invoiceTypeObj.value?'long active':'long'" 
+                            <div
+                                :class="item.value===invoiceTypeObj.value?'long active':'long'"
                                 :style="(resultInfo.invoiceTypeLovList.length%2)&&index===0?'width:100%':''"
                                 v-for='(item,index) in resultInfo.invoiceTypeLovList'
                                 @click='handleInvoiceTypeSelect(index)'
@@ -223,12 +223,12 @@
                             </van-radio-group>
                         </p>
                         <p class="c-flex inv-list">
-                            <span class="left">购方税号</span>
+                            <span class="left">购方税号<span v-if='["01", "02"].includes(businessTypeObj.value)' style="color:#FF4031">*</span></span>
                             <input type="text" class="right" v-model="buyerTaxNo"/>
                         </p>
                         <p class="c-flex inv-list">
                             <span class="left">地址/电话<span v-if='invoiceTypeObj.value==="0"' style="color:#FF4031">*</span></span>
-                            <textarea 
+                            <textarea
                                 maxlength=200
                                 :readonly='requestStatus!=="N"'
                                 v-model="buyerAddressPhone"
@@ -239,7 +239,7 @@
                         </p>
                         <p class="c-flex inv-list">
                             <span class="left">银行账号<span v-if='invoiceTypeObj.value==="0"' style="color:#FF4031">*</span></span>
-                            <textarea 
+                            <textarea
                                 maxlength=200
                                 :readonly='requestStatus!=="N"'
                                 v-model="buyerAccount"
@@ -253,7 +253,7 @@
                         <p class="title">收件信息</p>
                         <p class="c-flex inv-list">
                             <span class="left">手机号<span style="color:#FF4031" v-if='!electronicEmail'>*</span></span>
-                            <input 
+                            <input
                                 type="text"
                                 class="right"
                                 type='number'
@@ -265,7 +265,7 @@
                         </p>
                         <p class="c-flex inv-list">
                             <span class="left">邮箱<span style="color:#FF4031" v-if='!electronicPhone'>*</span></span>
-                            <input 
+                            <input
                                 type="text"
                                 class="right"
                                 placeholder="输入邮箱"
@@ -279,7 +279,7 @@
                         <p class="title">收件人信息</p>
                         <p class="c-flex inv-list">
                             <span class="left">收件人</span>
-                            <input 
+                            <input
                                 type="text"
                                 class="right"
                                 v-model="paperRecipient"
@@ -288,7 +288,7 @@
                         </p>
                         <p class="c-flex inv-list">
                             <span class="left">收件地址</span>
-                            <input 
+                            <input
                                 type="text"
                                 class="right"
                                 v-model="paperAddress"
@@ -297,7 +297,7 @@
                         </p>
                         <p class="c-flex inv-list">
                             <span class="left">收件电话</span>
-                            <input 
+                            <input
                                 type="text"
                                 class="right"
                                 type='number'
@@ -318,7 +318,7 @@
                                 <div class="Specifications" v-if='item.taxIncludedFlag===0'>{{(item.amount+item.taxAmount)/item.quantity}}元/份</div>
                                 <div class="Specifications" v-else>{{item.price}}元/份</div>
                             </div>
-                            
+
                             <div class="c-flex other">
                                 <p class="c-flex" v-if='item.price&&item.quantity'>*{{item.quantity}}</p>
                                 <p class="c-flex">税率{{item.taxRate}}</p>
@@ -382,7 +382,7 @@
                             <span class="value">--</span>
                         </p>
                     </div>
-                </div>    
+                </div>
             </div>
             `,
             methods: {
@@ -392,7 +392,7 @@
                         vant.Toast('发票数量为空');
                         return;
                     }
-                    window.location.href='./pdf.html'; 
+                    window.location.href='./pdf.html';
                 },
                 handlePush(){
                     //当为电子发票 邮箱或者电话必选一个
@@ -400,13 +400,13 @@
                         vant.Toast('邮箱或者电话必选一个');
                         return;
                     }
-                    if(this.electronicPhone&&!(/^1[3456789]\d{9}$/.test(this.electronicPhone))){ 
-                        vant.Toast('电话格式不正确');  
-                        return; 
+                    if(this.electronicPhone&&!(/^1[3456789]\d{9}$/.test(this.electronicPhone))){
+                        vant.Toast('电话格式不正确');
+                        return;
                     }
-                    if(this.electronicEmail&&!(/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(this.electronicEmail))){ 
-                        vant.Toast('邮箱格式不正确');  
-                        return; 
+                    if(this.electronicEmail&&!(/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(this.electronicEmail))){
+                        vant.Toast('邮箱格式不正确');
+                        return;
                     }
                     vant.Toast.loading({
                         duration:0,
@@ -507,7 +507,7 @@
                 },
                 // 提交开票
                 handleSubmit(){
-                    
+
                     if(!this.businessTypeObj.meaning||!this.buyerName.trim()){
                         vant.Toast('必填项为空');
                         return;
@@ -532,15 +532,15 @@
                             vant.Toast('邮箱或手机号仅能填写一个');
                             return;
                         }
-                        
-                        if(this.electronicPhone&&!(/^1[3456789]\d{9}$/.test(this.electronicPhone))){ 
-                            vant.Toast('电话格式不正确');  
-                            return; 
+
+                        if(this.electronicPhone&&!(/^1[3456789]\d{9}$/.test(this.electronicPhone))){
+                            vant.Toast('电话格式不正确');
+                            return;
                         }
-                        if(this.electronicEmail&&!(/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(this.electronicEmail))){ 
-                            vant.Toast('邮箱格式不正确');  
-                            return; 
-                        } 
+                        if(this.electronicEmail&&!(/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(this.electronicEmail))){
+                            vant.Toast('邮箱格式不正确');
+                            return;
+                        }
                     }
 
                     if(this.invoiceTypeObj.value==='51'||this.invoiceTypeObj.value==='52'){
