@@ -536,7 +536,11 @@
                             vant.Toast('电话格式不正确');
                             return;
                         }
-                        if(this.electronicEmail&&!(/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(this.electronicEmail))){
+                        // if(this.electronicEmail&&!(/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/.test(this.electronicEmail))){
+                        //     vant.Toast('邮箱格式不正确');
+                        //     return;
+                        // }
+                        if(this.electronicEmail&&!(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(this.electronicEmail))){
                             vant.Toast('邮箱格式不正确');
                             return;
                         }
