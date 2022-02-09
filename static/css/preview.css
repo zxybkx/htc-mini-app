@@ -54,12 +54,12 @@
     padding-bottom: 16px;
   }
   .invoiceInfo .border{
-    border-bottom: 2px dashed #D6D7D8;
+    border-bottom: 1px dashed #D6D7D8;
   }
   .invoiceInfo .list .label{
     flex-shrink: 0;
     margin-right: 24px;
-  
+
     font-weight: 400;
     color: #8C8C8C;
   }

@@ -196,7 +196,7 @@
                         </p>
                         <p class="c-flex inv-list">
                             <span class="left">开具金额</span>
-                            <span class="right">{{total.toFixed(2)}}</span>
+                            <span class="right" style="color: #FF8F07">{{total.toFixed(2)}}</span>
                         </p>
                         <p class="c-flex inv-list">
                             <span class="left">订单日期</span>
@@ -256,7 +256,7 @@
                             <input
                                 type="text"
                                 class="right"
-                                type='number'
+                                type='text'
                                 placeholder="输入手机号"
                                 :disabled='requestStatus==="N"&&electronicEmail?true:false'
                                 :readonly='(invoiceTypeObj.value!=="51"&&invoiceTypeObj.value!=="52")||requestStatus!=="N"'
@@ -315,7 +315,8 @@
                                 <p class="price" v-else>{{item.amount.toFixed(2)}}</p>
                             </div>
                             <div v-if='item.price&&item.quantity'>
-                                <div class="Specifications" v-if='item.taxIncludedFlag===0'>{{(item.amount+item.taxAmount)/item.quantity}}元/份</div>
+<!--                                <div class="Specifications" v-if='item.taxIncludedFlag===0'>{{((item.amount+item.taxAmount)/item.quantity)}}元/份</div>-->
+                                <div class="Specifications" v-if='item.taxIncludedFlag===0'>{{handlePrice(item)}}元/份</div>
                                 <div class="Specifications" v-else>{{item.price}}元/份</div>
                             </div>
 
@@ -323,7 +324,7 @@
                                 <p class="c-flex" v-if='item.price&&item.quantity'>*{{item.quantity}}</p>
                                 <p class="c-flex">税率{{item.taxRate}}</p>
                                 <p class="c-flex">税额{{item.taxAmount&&item.taxAmount.toFixed(2)}}</p>
-                                <p class="c-flex"  v-if='item.discountAmount' style='color:red;'>
+                                <p class="c-flex"  v-if='item.discountAmount' style='color:red; border: 1px solid red;'>
                                     折扣
                                     {{item.taxIncludedFlag===0?((item.discountAmount)*(1+Number(item.taxRate))).toFixed(2):item.discountAmount.toFixed(2)}}
                                 </p>
@@ -544,6 +545,11 @@
                             vant.Toast('邮箱格式不正确');
                             return;
                         }
+                    } else {
+                        if(this.paperPhone&&!(/^1[3456789]\d{9}$/.test(this.paperPhone))){
+                            vant.Toast('电话格式不正确');
+                            return;
+                        }
                     }
 
                     if(this.invoiceTypeObj.value==='51'||this.invoiceTypeObj.value==='52'){
@@ -609,7 +615,19 @@
                 },
                 handleClose(){
                     this.modelTag=false;
-                }
+                },
+                handlePrice(item) {
+                    const totalAmount = item.amount+item.taxAmount;
+                    const price = totalAmount / item.quantity;
+                    const priceArray = price.toString().split('.');
+                    if(priceArray.length > 1) {
+                        if(priceArray[1].length > 8) {
+                            const calPrice = Number(price).toFixed(8).toString();
+                            return Number(parseFloat(calPrice));
+                        }
+                    }
+                    return Number(price)
+                },
             },
             created(){
                 // initConsole()
@@ -676,9 +694,9 @@
                     this.electronicPhone=resData.electronicPhone,
                     this.requestStatus=resData.requestStatus;
 
-                    this.paperRecipient=this.paperRecipient;
-                    this.paperPhone=this.paperPhone;
-                    this.paperAddress=this.paperAddress;
+                    this.paperRecipient=resData.paperRecipient;
+                    this.paperPhone=resData.paperPhone;
+                    this.paperAddress=resData.paperAddress;
                     // 计算总金额
                     resData.requisitionLines.forEach(item=>{
                         if(item.taxIncludedFlag===0){
