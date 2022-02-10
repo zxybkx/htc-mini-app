@@ -667,7 +667,7 @@
                         vant.Toast(response.data.message)
                         return;
                     }
-                    if(response.data.data.requestStatus === 'Y') {
+                    if(response.data.data.data.deleteFlag === 'Y') {
                         vant.Toast('此二维码对应申请单已被删除，请联系商家重新生成！');
                         return;
                     }
